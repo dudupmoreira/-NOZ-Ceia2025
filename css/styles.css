@@ -287,6 +287,42 @@ body {
   border-radius: 3px 3px 0 0;
 }
 
+/* Select Mobile */
+.categories-mobile {
+  display: none;
+  padding: 1rem 1.5rem;
+  background: var(--color-branco);
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.categories-mobile label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-texto);
+  white-space: nowrap;
+}
+
+.category-select {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--color-borda);
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-vinho-principal);
+  background: var(--color-creme);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.category-select:focus {
+  outline: none;
+  border-color: var(--color-vinho-principal);
+  box-shadow: 0 0 0 3px rgba(115, 6, 26, 0.1);
+}
+
 /* ============================================
    PRODUTOS
 ============================================ */
@@ -579,36 +615,6 @@ body {
   font-weight: 700;
 }
 
-.cart-preview {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  overflow-x: auto;
-  max-width: 250px;
-  max-height: 50px;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-borda) transparent;
-}
-
-.cart-preview::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
-}
-
-.cart-preview::-webkit-scrollbar-thumb {
-  background: var(--color-borda);
-  border-radius: 2px;
-}
-
-.cart-preview-item {
-  font-size: 0.8rem;
-  color: var(--color-texto-claro);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 1.3;
-}
 
 .cart-btn {
   background: var(--color-vinho-principal);
@@ -1542,6 +1548,7 @@ body {
 
   .hero h1 {
     font-size: 1rem;
+    padding-left: 0;
   }
 
   .sobre-noz {
@@ -1553,20 +1560,20 @@ body {
   }
 
   .categories {
-    top: 105px;
+    top: 88px;
   }
 
-  .cart-preview {
-    max-width: 120px;
+  .categories-scroll {
+    display: none;
   }
 
-  .category-btn {
-    padding: 1rem 1.25rem;
-    font-size: 0.9rem;
+  .categories-mobile {
+    display: flex;
   }
 
   .main-content {
     padding: 1.5rem 1rem 7rem;
+    background: var(--color-bege);
   }
 
   .products-grid {

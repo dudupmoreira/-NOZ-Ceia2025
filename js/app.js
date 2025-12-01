@@ -222,38 +222,12 @@ function updateCartUI() {
     cartFloat.classList.remove('visible');
   }
 
-  renderCartPreview();
   renderCardapio();
   
   if (document.getElementById('cartModal').classList.contains('visible')) {
     renderCartBody();
     renderCartFooter();
   }
-}
-
-function renderCartPreview() {
-  const previewContainer = document.getElementById('cartPreview');
-  if (!previewContainer) return;
-
-  if (cart.length === 0) {
-    previewContainer.innerHTML = '';
-    return;
-  }
-
-  // Agrupar itens por produto e contar total de cada
-  const productCounts = new Map();
-  cart.forEach(item => {
-    const count = productCounts.get(item.productId) || 0;
-    productCounts.set(item.productId, count + item.quantity);
-  });
-
-  // Mostrar até 3 produtos diferentes
-  const itemsToShow = Array.from(productCounts.entries()).slice(0, 3);
-  
-  previewContainer.innerHTML = itemsToShow.map(([productId, totalQty]) => {
-    const product = findProduct(productId);
-    return `<div class="cart-preview-item">${product.nome} x${totalQty}</div>`;
-  }).join('');
 }
 
 // ============================================
@@ -553,7 +527,9 @@ function setupCategoryNav() {
   const buttons = document.querySelectorAll('.category-btn');
   const categoriesNav = document.querySelector('.categories');
   const mainContent = document.querySelector('.main-content');
+  const mobileSelect = document.getElementById('categorySelect');
   
+  // Navegação desktop
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
       const category = btn.dataset.category;
@@ -561,12 +537,24 @@ function setupCategoryNav() {
       buttons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       
-      const section = document.getElementById(category);
-      const headerHeight = 140;
-      const y = section.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-      window.scrollTo({ top: y, behavior: 'smooth' });
+      scrollToCategory(category);
     });
   });
+
+  // Navegação mobile
+  if (mobileSelect) {
+    mobileSelect.addEventListener('change', (e) => {
+      scrollToCategory(e.target.value);
+    });
+  }
+
+  // Função auxiliar para scroll
+  function scrollToCategory(category) {
+    const section = document.getElementById(category);
+    const headerHeight = window.innerWidth <= 768 ? 105 : 140;
+    const y = section.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  }
 
   window.addEventListener('scroll', () => {
     const sections = document.querySelectorAll('.category-section');
@@ -582,6 +570,10 @@ function setupCategoryNav() {
         buttons.forEach(b => {
           b.classList.toggle('active', b.dataset.category === category);
         });
+        // Atualizar select mobile
+        if (mobileSelect) {
+          mobileSelect.value = category;
+        }
       }
     });
 
