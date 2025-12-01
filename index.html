@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ceia de Natal 2025 | Noz Comida Afetiva</title>
+  <meta name="description" content="Seu fim de ano como deve ser: sem preocupação e com tempo pra tá junto. Encomende sua ceia de Natal com o Noz Comida Afetiva.">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Ceia de Natal 2025 | Noz Comida Afetiva">
+  <meta property="og:description" content="Seu fim de ano como deve ser: sem preocupação e com tempo pra tá junto.">
+  <meta property="og:type" content="website">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Aboreto&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- ============================================
+       PÁGINA PRINCIPAL
+  ============================================ -->
+  <div id="mainPage">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <img src="imagens/logo-noz-branco.webp" alt="Noz Comida Afetiva" class="logo-header">
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-content">
+        <img src="imagens/secao01-ceia-do-noz.webp" alt="Ceia do Noz" class="hero-image">
+        <h1>Seu fim de ano como deve ser: sem <strong>preocupação</strong> e com <strong>tempo pra tá junto.</strong></h1>
+      </div>
+    </section>
+
+    <!-- Sobre o Noz -->
+    <section class="sobre-noz">
+      <div class="sobre-noz-content">
+        <h2>O NÓZ COMIDA AFETIVA</h2>
+        <p>No Nóz, a gastronomia nasce da memória, mas ganha forma nas nossas mãos.</p>
+        <p>Nossa cozinha celebra as reuniões, respeitando ingredientes, processos e histórias que atravessam gerações.</p>
+        <p>A cada preparo, entregamos sensibilidade e uma curadoria precisa de sabores, pensada para quem valoriza experiências verdadeiras à mesa.</p>
+      </div>
+    </section>
+
+    <!-- Cardápio Intro -->
+    <section class="cardapio-intro">
+      <h2>Cardápio festivo</h2>
+      <p>Para as festas de fim de ano, criamos um cardápio especial que une sofisticação e identidade. Pratos elaborados com tempo, precisão e cuidado, para que sua celebração aconteça com tranquilidade, com muito sabor e autenticidade.</p>
+    </section>
+
+    <!-- Título Explore -->
+    <section class="explore-title">
+      <h2>Explore todos os pratos</h2>
+    </section>
+
+    <!-- Categorias -->
+    <nav class="categories">
+      <div class="categories-scroll">
+        <button class="category-btn active" data-category="entradas">Entradas</button>
+        <button class="category-btn" data-category="proteinas">Proteínas</button>
+        <button class="category-btn" data-category="quiches">Quiches</button>
+        <button class="category-btn" data-category="acompanhamentos">Acompanhamentos</button>
+        <button class="category-btn" data-category="sobremesas">Sobremesas</button>
+      </div>
+    </nav>
+
+    <!-- Cardápio -->
+    <main class="main-content" id="cardapio">
+      <!-- Conteúdo será gerado via JavaScript -->
+    </main>
+
+    <!-- Carrinho Flutuante -->
+    <div class="cart-float" id="cartFloat">
+      <div class="cart-float-content">
+        <div class="cart-info">
+          <div class="cart-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+            </svg>
+            <span class="cart-badge" id="cartCount">0</span>
+          </div>
+          <div class="cart-preview" id="cartPreview">
+            <!-- Pré-visualização dos itens -->
+          </div>
+          <div class="cart-details">
+            <small>Ver carrinho</small>
+            <strong id="cartTotal">R$ 0,00</strong>
+          </div>
+        </div>
+        <button class="cart-btn" onclick="openCart()">
+          Finalizar pedido
+          <span>→</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Seção Info -->
+    <section class="info-section">
+      <div class="info-content">
+        <p class="intro">Experimente uma ceia sem preocupação e com tempo pra tá junto. As ceias do Nóz foram criadas para quem deseja momentos memoráveis, sem a necessidade de longas horas na cozinha.</p>
+        
+        <div class="info-dates">
+          <div class="info-date-card">
+            <h3>🎄 Natal</h3>
+            <p>Pedidos até: <strong>20/12</strong></p>
+            <p>Retirada: <strong>24/12</strong></p>
+          </div>
+          <div class="info-date-card">
+            <h3>🎉 Réveillon</h3>
+            <p>Pedidos até: <strong>28/12</strong></p>
+            <p>Retirada: <strong>31/12</strong></p>
+          </div>
+        </div>
+
+        <div class="info-important">
+          <strong>⚠️ Importante!</strong>
+          <p>O preparo será iniciado após a confirmação do pedido mediante pagamento de 50% do valor total.</p>
+        </div>
+
+        <div class="info-horario">
+          <p><strong>Horário de atendimento no período festivo:</strong></p>
+          <p>Terça a sexta: das 11h30 às 15h</p>
+          <p>Sábado e domingo: das 11h30 às 15h</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Rodapé -->
+    <footer class="footer">
+      <div class="footer-content">
+        <img src="imagens/logo-noz-branco-rodape.webp" alt="Noz Comida Afetiva" class="footer-logo">
+        
+        <div class="footer-info">
+          <p>📍 Rua Amélia Tartuce Nasser, 865, Loja 10</p>
+          <p>Jardim da Penha - Vitória/ES</p>
+        </div>
+
+        <div class="footer-links">
+          <a href="https://www.instagram.com/nozcomidaafetiva" target="_blank" class="footer-link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+            @nozcomidaafetiva
+          </a>
+          <a href="https://wa.me/5527997016929" target="_blank" class="footer-link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+            (27) 99701-6929
+          </a>
+        </div>
+
+        <div class="footer-copy">
+          <p>&copy; 2025 Noz Comida Afetiva. Todos os direitos reservados.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ============================================
+       MODAL DO CARRINHO
+  ============================================ -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeCart()"></div>
+  <div class="modal" id="cartModal">
+    <div class="modal-header">
+      <h2>Seu Pedido</h2>
+      <button class="close-btn" onclick="closeCart()">✕</button>
+    </div>
+    
+    <div class="modal-body" id="cartBody">
+      <!-- Conteúdo do carrinho -->
+    </div>
+    
+    <div class="modal-footer" id="cartFooter">
+      <!-- Resumo e botão de checkout -->
+    </div>
+  </div>
+
+  <!-- ============================================
+       PÁGINA DE CONFIRMAÇÃO
+  ============================================ -->
+  <div class="confirmation-page" id="confirmationPage">
+    <div class="confirmation-header">
+      <div class="confirmation-icon">✓</div>
+      <h1>Pedido Recebido!</h1>
+      <p class="order-number">Pedido <strong id="orderNumberDisplay">#NOZ-2025-0001</strong></p>
+    </div>
+    
+    <div class="confirmation-content">
+      <!-- Resumo do pedido -->
+      <div class="confirmation-card">
+        <h2>📋 Resumo do Pedido</h2>
+        <div class="order-items" id="orderSummaryItems">
+          <!-- Itens do pedido -->
+        </div>
+        <div class="order-totals" id="orderSummaryTotals">
+          <!-- Totais -->
+        </div>
+      </div>
+
+      <!-- PIX -->
+      <div class="confirmation-card pix-section">
+        <h2>💰 Pagamento da Entrada (50%)</h2>
+        <div class="pix-amount" id="pixAmount">R$ 0,00</div>
+        
+        <div class="pix-qrcode">
+          <div class="pix-qrcode-placeholder">📱</div>
+        </div>
+        
+        <div class="pix-copy">
+          <label>PIX Copia e Cola:</label>
+          <div class="pix-copy-input">
+            <input type="text" id="pixCode" value="00020126580014br.gov.bcb.pix..." readonly>
+            <button onclick="copyPix()">📋 Copiar</button>
+          </div>
+        </div>
+        
+        <div class="bank-details">
+          <p><strong>Dados para transferência:</strong></p>
+          <p>Chave PIX (CNPJ): 33.339.742/0001-03</p>
+          <p>Noz Comida Afetiva</p>
+        </div>
+      </div>
+
+      <!-- Próximos passos -->
+      <div class="confirmation-card">
+        <h2>📱 Próximos Passos</h2>
+        <div class="next-steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-text">Faça o PIX da entrada usando o QR Code ou código acima</div>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-text">Envie o comprovante pelo WhatsApp</div>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-text">Aguarde a confirmação da nossa equipe</div>
+          </div>
+        </div>
+        
+        <button class="whatsapp-btn" id="whatsappBtn">
+          <span style="font-size: 1.5rem;">📲</span>
+          Enviar comprovante via WhatsApp
+        </button>
+      </div>
+
+      <!-- Contato -->
+      <div class="confirmation-card">
+        <h2>❓ Dúvidas?</h2>
+        <div class="contact-info">
+          <div class="contact-row">
+            <span>📞</span>
+            <span>(27) 99701-6929</span>
+          </div>
+          <div class="contact-row">
+            <span>📍</span>
+            <span>Rua Amélia Tartuce Nasser, 865, Loja 10<br>Jardim da Penha - Vitória/ES</span>
+          </div>
+          <div class="contact-row">
+            <span>📸</span>
+            <span>@nozcomidaafetiva</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast notification -->
+  <div class="toast" id="toast">Item adicionado!</div>
+
+  <!-- Image Zoom Overlay -->
+  <div class="image-zoom-overlay" id="imageZoomOverlay" onclick="closeImageZoom()">
+    <img id="zoomedImage" src="" alt="Zoom">
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/cardapio.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
