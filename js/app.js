@@ -353,10 +353,6 @@ function renderCartFooter() {
 
   footer.innerHTML = `
     <div class="cart-summary">
-      <div class="cart-summary-row">
-        <span>Subtotal</span>
-        <span>R$ ${formatPrice(total)}</span>
-      </div>
       <div class="cart-summary-row total">
         <span>Total</span>
         <span>R$ ${formatPrice(total)}</span>
@@ -367,8 +363,8 @@ function renderCartFooter() {
       </div>
     </div>
     <button class="checkout-btn" onclick="finalizarPedido()" ${!isValid ? 'disabled' : ''}>
-      Finalizar Pedido
-      <span>→</span>
+      <span class="checkout-loading" style="display: none;">⏳</span>
+      <span class="checkout-text">Finalizar Pedido →</span>
     </button>
     ${!isValid && cart.length > 0 ? '<p style="text-align: center; color: var(--color-texto-claro); font-size: 0.85rem; margin-top: 0.5rem;">Preencha nome e WhatsApp para continuar</p>' : ''}
   `;
@@ -378,6 +374,14 @@ function renderCartFooter() {
 // FINALIZAÇÃO DO PEDIDO
 // ============================================
 async function finalizarPedido() {
+  // Mostrar loading
+  const btn = document.querySelector('.checkout-btn');
+  const loadingSpan = btn.querySelector('.checkout-loading');
+  const textSpan = btn.querySelector('.checkout-text');
+  btn.disabled = true;
+  loadingSpan.style.display = 'inline';
+  textSpan.textContent = 'Processando...';
+  
   const orderNumber = `NOZ-2025-${String(Date.now()).slice(-4)}`;
   const total = getCartTotal();
   const entrada = total / 2;
@@ -446,10 +450,6 @@ function showConfirmationPage(pedido) {
 
   document.getElementById('orderSummaryTotals').innerHTML = `
     <div class="total-row">
-      <span>Subtotal</span>
-      <span>R$ ${formatPrice(total)}</span>
-    </div>
-    <div class="total-row">
       <span>📅 Retirada</span>
       <span>${selectedDate}/2025</span>
     </div>
@@ -490,8 +490,42 @@ function showConfirmationPage(pedido) {
     window.open(`https://wa.me/${CONFIG.whatsappNumber}?text=${mensagemWhatsApp}`, '_blank');
   };
 
-  document.getElementById('mainPage').style.display = 'none';
-  document.getElementById('confirmationPage').classList.add('visible');
+  // Codificar pedido em base64 para URL compartilhável
+  const pedidoCompact = {
+    n: pedido.numero_pedido,
+    d: selectedDate,
+    i: cart.map(item => {
+      const product = findProduct(item.productId);
+      const opcao = product.opcoes[item.optionIndex];
+      return {
+        nome: product.nome,
+        peso: opcao.peso,
+        qtd: item.quantity,
+        preco: opcao.preco * item.quantity
+      };
+    }),
+    t: total,
+    e: entrada,
+    cliente: pedido.nome
+  };
+  
+  const pedidoBase64 = btoa(encodeURIComponent(JSON.stringify(pedidoCompact)));
+  history.pushState({}, '', `?pedido=${pedidoBase64}`);
+  
+  // Transição suave
+  const mainPage = document.getElementById('mainPage');
+  const confirmPage = document.getElementById('confirmationPage');
+  
+  mainPage.style.opacity = '0';
+  setTimeout(() => {
+    mainPage.style.display = 'none';
+    confirmPage.classList.add('visible');
+    confirmPage.style.opacity = '0';
+    setTimeout(() => {
+      confirmPage.style.opacity = '1';
+    }, 50);
+  }, 300);
+  
   closeCart();
   window.scrollTo(0, 0);
 }

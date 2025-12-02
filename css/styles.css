@@ -1001,10 +1001,16 @@ body {
   display: none;
   min-height: 100vh;
   background: var(--color-creme);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .confirmation-page.visible {
   display: block;
+}
+
+#mainPage {
+  transition: opacity 0.3s ease;
 }
 
 .confirmation-header {
