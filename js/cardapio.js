@@ -117,7 +117,7 @@ const cardapio = {
     {
       id: "quiche-bacon",
       nome: "Quiche de Bacon com Alho Poró",
-      descricao: "Quiche artesanal com bacon defumado e alho poró",
+      descricao: "",
       imagem: "imagens/Quiche de bacon com alho poró.webp",
       opcoes: [
         { peso: "peça", preco: 170 }
@@ -126,7 +126,7 @@ const cardapio = {
     {
       id: "quiche-brie",
       nome: "Quiche de Brie com Damasco",
-      descricao: "Combinação sofisticada de queijo brie cremoso com damasco",
+      descricao: "",
       imagem: "imagens/Quiche de Brie com damasco.webp",
       opcoes: [
         { peso: "peça", preco: 195 }
@@ -135,7 +135,7 @@ const cardapio = {
     {
       id: "quiche-cogumelo",
       nome: "Quiche de Cogumelo",
-      descricao: "Mix de cogumelos (Paris, shimeji e funghi) com ervas frescas",
+      descricao: "",
       imagem: "imagens/Quiche de cogumelo.webp",
       opcoes: [
         { peso: "peça", preco: 195 }
@@ -146,7 +146,7 @@ const cardapio = {
     {
       id: "arroz-amendoas",
       nome: "Arroz com Amêndoas",
-      descricao: "Arroz aromático com amêndoas tostadas",
+      descricao: "",
       imagem: "imagens/Arroz com amêndoas.webp",
       opcoes: [
         { peso: "500g", preco: 55 },
@@ -156,7 +156,7 @@ const cardapio = {
     {
       id: "arroz-lentilha",
       nome: "Arroz com Lentilha e Cebola Caramelizada",
-      descricao: "Arroz com lentilha e cebola caramelizada",
+      descricao: "",
       imagem: "imagens/Arroz com lentilha e cebola caramelizada.webp",
       opcoes: [
         { peso: "500g", preco: 50 },
