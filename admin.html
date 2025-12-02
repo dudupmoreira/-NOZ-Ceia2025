@@ -695,7 +695,9 @@
             if (currentFilter !== 'todos') {
                 pedidosFiltrados = allPedidos.filter(pedido => {
                     const dataRetirada = getCustomField(pedido, 'data_retirada') || '';
-                    return dataRetirada.includes(currentFilter);
+                    // Formatar a data antes de comparar
+                    const dataFormatada = formatarData(dataRetirada);
+                    return dataFormatada.includes(currentFilter);
                 });
             }
 
@@ -858,7 +860,9 @@
             if (currentFilter !== 'todos') {
                 pedidosFiltrados = allPedidos.filter(pedido => {
                     const dataRetirada = getCustomField(pedido, 'data_retirada') || '';
-                    return dataRetirada.includes(currentFilter);
+                    // Formatar a data antes de comparar
+                    const dataFormatada = formatarData(dataRetirada);
+                    return dataFormatada.includes(currentFilter);
                 });
             }
 
@@ -910,14 +914,27 @@
         function formatarData(data) {
             if (!data) return 'N/A';
             
-            if (data.includes('/')) return data;
-            
-            if (data.includes('-')) {
-                const [ano, mes, dia] = data.split('-');
+            // Se for um timestamp numérico, converter para data
+            if (typeof data === 'number') {
+                const date = new Date(data);
+                const dia = String(date.getDate()).padStart(2, '0');
+                const mes = String(date.getMonth() + 1).padStart(2, '0');
                 return `${dia}/${mes}`;
             }
             
-            return data;
+            // Converter para string se não for
+            const dataStr = String(data);
+            
+            // Se já está no formato dd/mm, retornar
+            if (dataStr.includes('/')) return dataStr;
+            
+            // Se está no formato ISO (yyyy-mm-dd), converter
+            if (dataStr.includes('-')) {
+                const [ano, mes, dia] = dataStr.split('-');
+                return `${dia}/${mes}`;
+            }
+            
+            return dataStr;
         }
     </script>
 </body>
