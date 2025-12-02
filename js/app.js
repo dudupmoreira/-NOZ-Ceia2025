@@ -125,7 +125,11 @@ function renderCardapio() {
 function renderProductCard(product, category) {
   const imageHtml = product.imagem 
     ? `<img src="${product.imagem}" alt="${product.nome}" class="product-image" onclick="openImageZoom('${product.imagem}')">`
-    : `<div class="product-image-placeholder">🍽️</div>`;
+    : `<div class="product-image-placeholder">
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M8.1 13.34L10.93 10.51L13.76 13.34L18.76 8.34L20.17 9.75L13.76 16.16L10.93 13.34L7.27 17H20V19H4V6H6V14.27L8.1 13.34M6 3V1H8V3H6M11 3V1H13V3H11M16 3V1H18V3H16Z"/>
+        </svg>
+      </div>`;
 
   return `
     <div class="product-card" data-product-id="${product.id}">
@@ -263,7 +267,11 @@ function renderCartBody() {
   if (cart.length === 0) {
     body.innerHTML = `
       <div class="cart-empty">
-        <div class="cart-empty-icon">🛒</div>
+        <div class="cart-empty-icon">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17 18C15.89 18 15 18.89 15 20C15 20.5304 15.2107 21.0391 15.5858 21.4142C15.9609 21.7893 16.4696 22 17 22C17.5304 22 18.0391 21.7893 18.4142 21.4142C18.7893 21.0391 19 20.5304 19 20C19 18.89 18.1 18 17 18M1 2V4H3L6.6 11.59L5.24 14.04C5.09 14.32 5 14.65 5 15C5 16.1 5.9 17 7 17H19V15H7.42C7.28 15 7.17 14.89 7.17 14.75L7.2 14.63L8.1 13H15.55C16.3 13 16.96 12.58 17.3 11.97L20.88 5.5C20.95 5.34 21 5.17 21 5C21 4.45 20.55 4 20 4H5.21L4.27 2M7 18C5.89 18 5 18.89 5 20C5 21.1 5.89 22 7 22C8.1 22 9 21.1 9 20C9 18.89 8.1 18 7 18Z"/>
+          </svg>
+        </div>
         <p>Seu carrinho está vazio</p>
         <p>Adicione itens do cardápio para começar</p>
       </div>
@@ -273,7 +281,12 @@ function renderCartBody() {
 
   let html = `
     <div class="date-picker-section">
-      <label>📅 Data de Retirada</label>
+      <label>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+          <path d="M19 4H18V2H16V4H8V2H6V4H5C3.89 4 3.01 4.9 3.01 6L3 20C3 21.1 3.89 22 5 22H19C20.1 22 21 21.1 21 20V6C21 4.9 20.1 4 19 4M19 20H5V10H19V20M19 8H5V6H19V8M7 12H12V17H7V12Z"/>
+        </svg>
+        Data de Retirada
+      </label>
       <div class="date-options">
         <div class="date-option ${selectedDate === '24/12' ? 'selected' : ''}" onclick="selectDate('24/12')">
           <strong>24/12</strong>
@@ -321,7 +334,11 @@ function renderCartItem(item) {
 
   const imageHtml = product.imagem
     ? `<img src="${product.imagem}" alt="${product.nome}" class="cart-item-image">`
-    : `<div class="cart-item-placeholder">🍽️</div>`;
+    : `<div class="cart-item-placeholder">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M8.1 13.34L10.93 10.51L13.76 13.34L18.76 8.34L20.17 9.75L13.76 16.16L10.93 13.34L7.27 17H20V19H4V6H6V14.27L8.1 13.34M6 3V1H8V3H6M11 3V1H13V3H11M16 3V1H18V3H16Z"/>
+        </svg>
+      </div>`;
 
   return `
     <div class="cart-item">
@@ -339,7 +356,11 @@ function renderCartItem(item) {
           <span>${item.quantity}</span>
           <button onclick="updateQuantity('${item.productId}', ${item.optionIndex}, 1)">+</button>
         </div>
-        <button class="remove-btn" onclick="removeFromCart('${item.productId}', ${item.optionIndex})">🗑</button>
+        <button class="remove-btn" onclick="removeFromCart('${item.productId}', ${item.optionIndex})">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M9 3V4H4V6H5V19C5 20.1 5.9 21 7 21H17C18.1 21 19 20.1 19 19V6H20V4H15V3H9M7 6H17V19H7V6M9 8V17H11V8H9M13 8V17H15V8H13Z"/>
+          </svg>
+        </button>
       </div>
     </div>
   `;
@@ -450,7 +471,12 @@ function showConfirmationPage(pedido) {
 
   document.getElementById('orderSummaryTotals').innerHTML = `
     <div class="total-row">
-      <span>📅 Retirada</span>
+      <span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+          <path d="M19 4H18V2H16V4H8V2H6V4H5C3.89 4 3.01 4.9 3.01 6L3 20C3 21.1 3.89 22 5 22H19C20.1 22 21 21.1 21 20V6C21 4.9 20.1 4 19 4M19 20H5V10H19V20M19 8H5V6H19V8M7 12H12V17H7V12Z"/>
+        </svg>
+        Retirada
+      </span>
       <span>${selectedDate}/2025</span>
     </div>
     <div class="total-row big">
@@ -458,7 +484,12 @@ function showConfirmationPage(pedido) {
       <span>R$ ${formatPrice(total)}</span>
     </div>
     <div class="total-row highlight">
-      <span>💰 Entrada (50%)</span>
+      <span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+          <path d="M12 2C6.48 2 2 6.48 2 12S6.48 22 12 22 22 17.52 22 12 17.52 2 12 2M13.41 18.09V20H10.59V18.09C9.48 17.84 8.47 17.3 7.68 16.54L9.4 14.82C10.01 15.38 10.75 15.8 11.57 16.04V13.26L11.23 13.18C9.15 12.66 7.86 11.85 7.86 10.18C7.86 8.67 9.05 7.53 10.59 7.17V5.26H13.41V7.17C14.5 7.42 15.41 7.93 16.1 8.63L14.42 10.31C13.89 9.82 13.24 9.47 12.57 9.25V12.03L12.91 12.11C15.14 12.66 16.23 13.55 16.23 15.18C16.23 16.73 15.07 17.84 13.41 18.09M11.57 9.18V7.42C10.71 7.58 10.14 8.12 10.14 8.8C10.14 9.38 10.46 9.76 11.57 10.08V9.18M13.41 15.95V17.71C14.27 17.55 14.84 17.03 14.84 16.33C14.84 15.75 14.52 15.37 13.41 15.05V15.95Z"/>
+        </svg>
+        Entrada (50%)
+      </span>
       <span>R$ ${formatPrice(entrada)}</span>
     </div>
   `;

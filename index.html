@@ -72,7 +72,12 @@
       
       <!-- Select para mobile -->
       <div class="categories-mobile">
-        <label for="categorySelect">📋 Categoria:</label>
+        <label for="categorySelect">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+            <path d="M3 13H11V3H3M3 21H11V15H3M13 21H21V11H13M13 3V9H21V3"/>
+          </svg>
+          Categoria:
+        </label>
         <select id="categorySelect" class="category-select">
           <option value="entradas">Entradas</option>
           <option value="proteinas">Proteínas</option>
@@ -116,20 +121,35 @@
         <p class="intro">Experimente uma ceia sem preocupação e com tempo pra tá junto. As ceias do Nóz foram criadas para quem deseja momentos memoráveis, sem a necessidade de longas horas na cozinha.</p>
         
         <div class="info-dates">
-          <div class="info-date-card">
-            <h3>🎄 Natal</h3>
-            <p>Pedidos até: <strong>20/12</strong></p>
-            <p>Retirada: <strong>24/12</strong></p>
-          </div>
-          <div class="info-date-card">
-            <h3>🎉 Réveillon</h3>
-            <p>Pedidos até: <strong>28/12</strong></p>
-            <p>Retirada: <strong>31/12</strong></p>
-          </div>
+        <div class="info-date-card">
+          <h3>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+              <path d="M12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2Z"/>
+            </svg>
+            Natal
+          </h3>
+          <p>Pedidos até: <strong>20/12</strong></p>
+          <p>Retirada: <strong>24/12</strong></p>
+        </div>
+        <div class="info-date-card">
+          <h3>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+              <path d="M13 6V11H18V14L22 10L18 6V9H13V6M4 9C4 10.1 3.1 11 2 11V13C3.1 13 4 13.9 4 15V20H11V15C11 13.9 11.9 13 13 13V11C11.9 11 11 10.1 11 9V4H4V9M13 20H20V15C20 13.9 20.9 13 22 13V11C20.9 11 20 10.1 20 9V4H13V9C13 10.1 13.9 11 15 11V13C13.9 13 13 13.9 13 15V20M9 13C9 12.4 8.6 12 8 12H7C6.4 12 6 12.4 6 13V18C6 18.6 6.4 19 7 19H8C8.6 19 9 18.6 9 18V13Z"/>
+            </svg>
+            Réveillon
+          </h3>
+          <p>Pedidos até: <strong>28/12</strong></p>
+          <p>Retirada: <strong>31/12</strong></p>
+        </div>
         </div>
 
         <div class="info-important">
-          <strong>⚠️ Importante!</strong>
+          <strong>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display: inline-block; vertical-align: middle; margin-right: 6px;">
+              <path d="M13 14H11V9H13M13 18H11V16H13M1 21H23L12 2L1 21Z"/>
+            </svg>
+            Importante!
+          </strong>
           <p>O preparo será iniciado após a confirmação do pedido mediante pagamento de 50% do valor total.</p>
         </div>
 
@@ -147,7 +167,12 @@
         <img src="imagens/logo-noz-branco-rodape.webp" alt="Noz Comida Afetiva" class="footer-logo">
         
         <div class="footer-info">
-          <p>📍 Rua Amélia Tartuce Nasser, 865, Loja 10</p>
+          <p>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+              <path d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22S19 14.25 19 9C19 5.13 15.87 2 12 2M12 11.5C10.62 11.5 9.5 10.38 9.5 9S10.62 6.5 12 6.5 14.5 7.62 14.5 9 13.38 11.5 12 11.5Z"/>
+            </svg>
+            Rua Amélia Tartuce Nasser, 865, Loja 10
+          </p>
           <p>Jardim da Penha - Vitória/ES</p>
         </div>
 
@@ -197,7 +222,11 @@
   ============================================ -->
   <div class="confirmation-page" id="confirmationPage">
     <div class="confirmation-header">
-      <div class="confirmation-icon">✓</div>
+      <div class="confirmation-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z"/>
+        </svg>
+      </div>
       <h1>Pedido Recebido!</h1>
       <p class="order-number">Pedido <strong id="orderNumberDisplay">#NOZ-2025-0001</strong></p>
     </div>
@@ -205,7 +234,12 @@
     <div class="confirmation-content">
       <!-- Resumo do pedido -->
       <div class="confirmation-card">
-        <h2>📋 Resumo do Pedido</h2>
+        <h2>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 3H14.82C14.4 1.84 13.3 1 12 1S9.6 1.84 9.18 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3M12 3C12.55 3 13 3.45 13 4S12.55 5 12 5 11 4.55 11 4 11.45 3 12 3M7 7H17V9H7V7M7 11H17V13H7V11M7 15H17V17H7V15Z"/>
+          </svg>
+          Resumo do Pedido
+        </h2>
         <div class="order-items" id="orderSummaryItems">
           <!-- Itens do pedido -->
         </div>
@@ -216,7 +250,12 @@
 
       <!-- PIX -->
       <div class="confirmation-card pix-section">
-        <h2>💰 Pagamento da Entrada (50%)</h2>
+        <h2>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12S6.48 22 12 22 22 17.52 22 12 17.52 2 12 2M13.41 18.09V20H10.59V18.09C9.48 17.84 8.47 17.3 7.68 16.54L9.4 14.82C10.01 15.38 10.75 15.8 11.57 16.04V13.26L11.23 13.18C9.15 12.66 7.86 11.85 7.86 10.18C7.86 8.67 9.05 7.53 10.59 7.17V5.26H13.41V7.17C14.5 7.42 15.41 7.93 16.1 8.63L14.42 10.31C13.89 9.82 13.24 9.47 12.57 9.25V12.03L12.91 12.11C15.14 12.66 16.23 13.55 16.23 15.18C16.23 16.73 15.07 17.84 13.41 18.09M11.57 9.18V7.42C10.71 7.58 10.14 8.12 10.14 8.8C10.14 9.38 10.46 9.76 11.57 10.08V9.18M13.41 15.95V17.71C14.27 17.55 14.84 17.03 14.84 16.33C14.84 15.75 14.52 15.37 13.41 15.05V15.95Z"/>
+          </svg>
+          Pagamento da Entrada (50%)
+        </h2>
         <div class="pix-amount" id="pixAmount">R$ 0,00</div>
         
         <div class="pix-qrcode">
@@ -240,7 +279,12 @@
 
       <!-- Próximos passos -->
       <div class="confirmation-card">
-        <h2>📱 Próximos Passos</h2>
+        <h2>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17 19H7V5H17M17 1H7C5.89 1 5 1.89 5 3V21C5 22.1 5.9 23 7 23H17C18.1 23 19 22.1 19 21V3C19 1.89 18.1 1 17 1M9 7H15V9H9V7M9 11H15V13H9V11Z"/>
+          </svg>
+          Próximos Passos
+        </h2>
         <div class="next-steps">
           <div class="step">
             <div class="step-number">1</div>
@@ -264,18 +308,29 @@
 
       <!-- Contato -->
       <div class="confirmation-card">
-        <h2>❓ Dúvidas?</h2>
+        <h2>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M10 19H13V22H10V19M12 2C17.5 2 22 6.5 22 12S17.5 22 12 22 2 17.5 2 12 6.5 2 12 2M12 4C10.1 4 8.4 4.6 7.1 5.7L8.5 7.1C9.5 6.4 10.7 6 12 6C15.3 6 18 8.7 18 12C18 13.9 17 15.5 15.5 16.3V18.4C18 17.3 20 14.8 20 12C20 7.6 16.4 4 12 4M12 8C9.8 8 8 9.8 8 12H10C10 10.9 10.9 10 12 10S14 10.9 14 12C14 13.1 13.1 14 12 14H11V17H13C14.1 17 15 16.1 15 15V14.8C15.6 14.4 16 13.7 16 13C16 11.3 14.7 10 13 10H12C10.9 10 10 10.9 10 12H12V13C12.6 13 13 12.6 13 12S12.6 11 12 11 11 11.4 11 12H9C9 10.3 10.3 9 12 9S15 10.3 15 12C15 12.8 14.6 13.4 14 13.8V14C14 14.6 13.6 15 13 15H12V16H13C13.6 16 14 15.6 14 15V14.2C15.2 13.6 16 12.4 16 11C16 9.3 14.7 8 13 8H12Z"/>
+          </svg>
+          Dúvidas?
+        </h2>
         <div class="contact-info">
           <div class="contact-row">
-            <span>📞</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6.62 10.79C8.06 13.62 10.38 15.94 13.21 17.38L15.41 15.18C15.69 14.9 16.08 14.82 16.43 14.93C17.55 15.3 18.75 15.5 20 15.5C20.55 15.5 21 15.95 21 16.5V20C21 20.55 20.55 21 20 21C10.61 21 3 13.39 3 4C3 3.45 3.45 3 4 3H7.5C8.05 3 8.5 3.45 8.5 4C8.5 5.25 8.7 6.45 9.07 7.57C9.18 7.92 9.1 8.31 8.82 8.59L6.62 10.79Z"/>
+            </svg>
             <span>(27) 99701-6929</span>
           </div>
           <div class="contact-row">
-            <span>📍</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22S19 14.25 19 9C19 5.13 15.87 2 12 2M12 11.5C10.62 11.5 9.5 10.38 9.5 9S10.62 6.5 12 6.5 14.5 7.62 14.5 9 13.38 11.5 12 11.5Z"/>
+            </svg>
             <span>Rua Amélia Tartuce Nasser, 865, Loja 10<br>Jardim da Penha - Vitória/ES</span>
           </div>
           <div class="contact-row">
-            <span>📸</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M7.8 2H16.2C19.4 2 22 4.6 22 7.8V16.2C22 17.7 21.4 19.1 20.3 20.2C19.2 21.3 17.8 22 16.2 22H7.8C4.6 22 2 19.4 2 16.2V7.8C2 6.3 2.6 4.9 3.7 3.8C4.8 2.7 6.2 2 7.8 2M7.6 4C6.6 4 5.6 4.4 4.9 5.1C4.2 5.8 3.8 6.8 3.8 7.8V16.2C3.8 18.4 5.6 20.2 7.8 20.2H16.2C17.2 20.2 18.2 19.8 18.9 19.1C19.6 18.4 20 17.4 20 16.4V7.8C20 5.6 18.2 3.8 16 3.8H7.6M17.25 5.5C17.9 5.5 18.5 6.1 18.5 6.75S17.9 8 17.25 8 16 7.4 16 6.75 16.6 5.5 17.25 5.5M12 7C14.8 7 17 9.2 17 12S14.8 17 12 17 7 14.8 7 12 9.2 7 12 7M12 9C11.2 9 10.5 9.3 9.9 9.9C9.3 10.5 9 11.2 9 12S9.3 13.5 9.9 14.1C10.5 14.7 11.2 15 12 15S13.5 14.7 14.1 14.1C14.7 13.5 15 12.8 15 12S14.7 10.5 14.1 9.9C13.5 9.3 12.8 9 12 9Z"/>
+            </svg>
             <span>@nozcomidaafetiva</span>
           </div>
         </div>
