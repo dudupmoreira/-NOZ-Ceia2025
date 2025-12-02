@@ -8,7 +8,7 @@ const cardapio = {
       id: "salada-bacalhau",
       nome: "Salada de Bacalhau e Grão de Bico",
       descricao: "Lascas de bacalhau gadus morhua, grão de bico, tomate, cebola roxa, azeitona preta, coentro, limão e azeite",
-      imagem: "imagens/Salada de Bacalhau e grão de bico.jpg",
+      imagem: "imagens/Salada de Bacalhau e grão de bico.webp",
       opcoes: [
         { peso: "500g", preco: 125 },
         { peso: "1kg", preco: 220 }
@@ -18,7 +18,7 @@ const cardapio = {
       id: "vinagrete-polvo",
       nome: "Vinagrete de Polvo",
       descricao: "Polvo, feijão fradinho, cebola roxa, tomate, pimentão amarelo, pimentão vermelho, coentro, limão e azeite",
-      imagem: "imagens/Vinagrete de polvo.jpg",
+      imagem: "imagens/Vinagrete de polvo.webp",
       opcoes: [
         { peso: "500g", preco: 125 },
         { peso: "1kg", preco: 220 }
@@ -28,7 +28,7 @@ const cardapio = {
       id: "maionese-camarao",
       nome: "Maionese de Camarão",
       descricao: "Batata em cubos, camarão VG, cebola roxa, aioli de alho assado com páprica, cebolinha e limão",
-      imagem: "imagens/Maionese de camarão.jpg",
+      imagem: "imagens/Maionese de camarão.webp",
       opcoes: [
         { peso: "500g", preco: 125 },
         { peso: "1kg", preco: 220 }
@@ -38,7 +38,7 @@ const cardapio = {
       id: "salpicao-defumado",
       nome: "Salpicão Defumado",
       descricao: "Frango defumado na casa com lenha de macieira, cebola, ervilha, aioli de alho assado e páprica, cenoura, uva passas e batata palha da casa",
-      imagem: "imagens/Salpicão defumado.jpg",
+      imagem: "imagens/Salpicão defumado.webp",
       opcoes: [
         { peso: "500g", preco: 95 },
         { peso: "1kg", preco: 155 }
@@ -59,7 +59,7 @@ const cardapio = {
       id: "chester-peru",
       nome: "Chester ou Peru Assado",
       descricao: "Acompanha batata bolinha e farofa natalina. Aproximadamente 4,5kg o prato completo",
-      imagem: "imagens/Chester ou Peru assado.jpg",
+      imagem: "imagens/Chester ou Peru assado.webp",
       opcoes: [
         { peso: "~4,5kg", preco: 535 }
       ]
@@ -68,7 +68,7 @@ const cardapio = {
       id: "beef-wellington",
       nome: "Beef Wellington",
       descricao: "Peça de filé mignon envolto no presunto de parma, creme de cogumelos e massa folhada. Aprox. 2kg",
-      imagem: "imagens/Beef Wellington.jpg",
+      imagem: "imagens/Beef Wellington.webp",
       opcoes: [
         { peso: "~2kg", preco: 395 }
       ]
@@ -77,7 +77,7 @@ const cardapio = {
       id: "pernil-cordeiro",
       nome: "Pernil de Cordeiro",
       descricao: "Acompanha molho do próprio assado com vinho tinto. Aproximadamente 1,8kg",
-      imagem: "imagens/Pernil de cordeiro.jpg",
+      imagem: "imagens/Pernil de cordeiro.webp",
       opcoes: [
         { peso: "~1,8kg", preco: 380 }
       ]
@@ -86,7 +86,7 @@ const cardapio = {
       id: "rosbife",
       nome: "Rosbife",
       descricao: "Com molho de cogumelos (shimeji, Paris e funghi), conhaque e creme de leite fresco",
-      imagem: "imagens/Rosbife.jpg",
+      imagem: "imagens/Rosbife.webp",
       opcoes: [
         { peso: "500g", preco: 150 },
         { peso: "1kg", preco: 275 }
@@ -106,7 +106,7 @@ const cardapio = {
       id: "bacalhau-natas",
       nome: "Bacalhau com Natas",
       descricao: "Lascas de bacalhau gadus morhua, batata e nata. Gratinado com parmesão",
-      imagem: "imagens/Bacalhau com natas.jpg",
+      imagem: "imagens/Bacalhau com natas.webp",
       opcoes: [
         { peso: "500g", preco: 140 },
         { peso: "1kg", preco: 240 }
@@ -118,7 +118,7 @@ const cardapio = {
       id: "quiche-bacon",
       nome: "Quiche de Bacon com Alho Poró",
       descricao: "Quiche artesanal com bacon defumado e alho poró",
-      imagem: "imagens/Quiche de bacon com alho poró.jpg",
+      imagem: "imagens/Quiche de bacon com alho poró.webp",
       opcoes: [
         { peso: "peça", preco: 170 }
       ]
@@ -127,7 +127,7 @@ const cardapio = {
       id: "quiche-brie",
       nome: "Quiche de Brie com Damasco",
       descricao: "Combinação sofisticada de queijo brie cremoso com damasco",
-      imagem: "imagens/Quiche de Brie com damasco.jpg",
+      imagem: "imagens/Quiche de Brie com damasco.webp",
       opcoes: [
         { peso: "peça", preco: 195 }
       ]
@@ -136,7 +136,7 @@ const cardapio = {
       id: "quiche-cogumelo",
       nome: "Quiche de Cogumelo",
       descricao: "Mix de cogumelos (Paris, shimeji e funghi) com ervas frescas",
-      imagem: "imagens/Quiche de cogumelo.jpg",
+      imagem: "imagens/Quiche de cogumelo.webp",
       opcoes: [
         { peso: "peça", preco: 195 }
       ]
@@ -147,7 +147,7 @@ const cardapio = {
       id: "arroz-amendoas",
       nome: "Arroz com Amêndoas",
       descricao: "Arroz aromático com amêndoas tostadas",
-      imagem: "imagens/Arroz com amêndoas.jpg",
+      imagem: "imagens/Arroz com amêndoas.webp",
       opcoes: [
         { peso: "500g", preco: 55 },
         { peso: "1kg", preco: 95 }
@@ -157,7 +157,7 @@ const cardapio = {
       id: "arroz-lentilha",
       nome: "Arroz com Lentilha e Cebola Caramelizada",
       descricao: "Arroz com lentilha e cebola caramelizada",
-      imagem: "imagens/Arroz com lentilha e cebola caramelizada.jpg",
+      imagem: "imagens/Arroz com lentilha e cebola caramelizada.webp",
       opcoes: [
         { peso: "500g", preco: 50 },
         { peso: "1kg", preco: 90 }
@@ -167,7 +167,7 @@ const cardapio = {
       id: "farofa-natalina",
       nome: "Farofa Natalina",
       descricao: "Bacon, castanha, amêndoa, banana frita, cebola, alho e passas",
-      imagem: "imagens/Farofa natalina.jpg",
+      imagem: "imagens/Farofa natalina.webp",
       opcoes: [
         { peso: "500g", preco: 60 },
         { peso: "1kg", preco: 105 }
@@ -177,7 +177,7 @@ const cardapio = {
       id: "batata-bolinha",
       nome: "Batata Bolinha",
       descricao: "Assada com alecrim e manteiga",
-      imagem: "imagens/Batata bolinha.jpg",
+      imagem: "imagens/Batata bolinha.webp",
       opcoes: [
         { peso: "500g", preco: 35 },
         { peso: "1kg", preco: 65 }
