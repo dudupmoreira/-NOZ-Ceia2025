@@ -64,12 +64,43 @@ body {
   padding: 1rem 1.5rem;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .logo-header {
   max-height: 90px;
   width: auto;
+}
+
+.header-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.header-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-dourado-claro);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.header-link svg {
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+.header-link:hover {
+  color: var(--color-dourado);
+  transform: translateY(-2px);
+}
+
+.header-phone {
+  white-space: nowrap;
 }
 
 /* ============================================
@@ -1601,6 +1632,14 @@ body {
 
   .logo-header {
     max-height: 70px;
+  }
+
+  .header-phone {
+    display: none;
+  }
+
+  .header-links {
+    gap: 1rem;
   }
 
   .info-dates {
