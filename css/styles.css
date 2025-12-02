@@ -1548,7 +1548,7 @@ body {
 
   .hero h1 {
     font-size: 1rem;
-    padding-left: 0;
+    padding: 0 60px;
   }
 
   .sobre-noz {
@@ -1560,15 +1560,15 @@ body {
   }
 
   .categories {
-    top: 88px;
+    top: 86px;
   }
 
   .categories-scroll {
-    display: none;
+    display: none !important;
   }
 
   .categories-mobile {
-    display: flex;
+    display: flex !important;
   }
 
   .main-content {
