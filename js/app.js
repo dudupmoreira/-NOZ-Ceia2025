@@ -509,13 +509,13 @@ function showConfirmationPage(pedido) {
   }).join('\n');
 
   const mensagemWhatsApp = encodeURIComponent(
-    `Olá! Acabei de fazer o pedido *${pedido.numero_pedido}* para a Ceia de Natal. 🎄\n\n` +
-    `*📋 Itens do pedido:*\n${itensResumo}\n\n` +
-    `📅 *Retirada:* ${selectedDate}/2025\n` +
-    `💰 *Total:* R$ ${formatPrice(total)}\n` +
-    `💳 *Entrada (50%):* R$ ${formatPrice(entrada)}\n\n` +
-    `👤 *Nome:* ${pedido.nome}\n\n` +
-    `Segue o comprovante do PIX em anexo. ✅`
+    `Olá! Acabei de fazer o pedido *${pedido.numero_pedido}* para a Ceia de Natal. \u{1F384}\n\n` +
+    `*\u{1F4CB} Itens do pedido:*\n${itensResumo}\n\n` +
+    `\u{1F4C5} *Retirada:* ${selectedDate}/2025\n` +
+    `\u{1F4B0} *Total:* R$ ${formatPrice(total)}\n` +
+    `\u{1F4B3} *Entrada (50%):* R$ ${formatPrice(entrada)}\n\n` +
+    `\u{1F464} *Nome:* ${pedido.nome}\n\n` +
+    `Segue o comprovante do PIX em anexo. \u{2705}`
   );
   document.getElementById('whatsappBtn').onclick = () => {
     window.open(`https://wa.me/${CONFIG.whatsappNumber}?text=${mensagemWhatsApp}`, '_blank');
