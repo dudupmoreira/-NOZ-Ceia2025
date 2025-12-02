@@ -640,6 +640,10 @@ body {
   box-shadow: var(--shadow-md);
 }
 
+.cart-btn * {
+  pointer-events: none;
+}
+
 /* ============================================
    MODAL DO CARRINHO
 ============================================ */
