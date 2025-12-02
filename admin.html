@@ -140,8 +140,14 @@
             font-size: 0.85rem;
         }
 
-        .btn-success:hover {
+        .btn-success:hover:not(:disabled) {
             background: #218838;
+        }
+
+        .btn-success:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            opacity: 0.6;
         }
 
         .btn-secondary {
@@ -347,6 +353,11 @@
         .badge-data {
             background: #e3f2fd;
             color: #1565c0;
+        }
+
+        .badge-confirmado {
+            background: #d4edda;
+            color: #155724;
         }
 
         .pedido-info {
@@ -727,6 +738,9 @@
             const telefone = pedido.phone || '';
             const whatsappLink = telefone ? `https://wa.me/${telefone.replace(/\D/g, '')}` : '#';
             
+            // Verificar se o PIX já foi confirmado
+            const pixConfirmado = pedido.tags && pedido.tags.includes('pix-confirmado');
+            
             const produtosList = produtos.split('\n')
                 .filter(p => p.trim())
                 .map(p => `<div class="produto-item">${p}</div>`)
@@ -736,7 +750,10 @@
                 <div class="pedido-card">
                     <div class="pedido-header">
                         <div class="pedido-numero">#${numeroPedido}</div>
-                        <div class="badge badge-data">📅 ${formatarData(dataRetirada)}</div>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <div class="badge badge-data">📅 ${formatarData(dataRetirada)}</div>
+                            ${pixConfirmado ? '<div class="badge badge-confirmado">✅ PIX Confirmado</div>' : ''}
+                        </div>
                     </div>
                     
                     <div class="pedido-info">
@@ -773,8 +790,10 @@
                     </div>
                     
                     <div class="pedido-actions">
-                        <button class="btn btn-success" onclick="confirmarPix('${pedido.id}', '${numeroPedido}')">
-                            ✅ Confirmar PIX
+                        <button class="btn btn-success" 
+                                onclick="confirmarPix('${pedido.id}', '${numeroPedido}')"
+                                ${pixConfirmado ? 'disabled' : ''}>
+                            ${pixConfirmado ? '✔️ PIX Confirmado' : '✅ Confirmar PIX'}
                         </button>
                         ${telefone ? `<a href="${whatsappLink}" target="_blank" class="btn btn-secondary">💬 WhatsApp</a>` : ''}
                     </div>
@@ -914,11 +933,11 @@
         function formatarData(data) {
             if (!data) return 'N/A';
             
-            // Se for um timestamp numérico, converter para data
+            // Se for um timestamp numérico, converter para data usando UTC
             if (typeof data === 'number') {
                 const date = new Date(data);
-                const dia = String(date.getDate()).padStart(2, '0');
-                const mes = String(date.getMonth() + 1).padStart(2, '0');
+                const dia = String(date.getUTCDate()).padStart(2, '0');
+                const mes = String(date.getUTCMonth() + 1).padStart(2, '0');
                 return `${dia}/${mes}`;
             }
             
