@@ -1538,6 +1538,10 @@ body {
     padding: 2rem 1rem;
   }
 
+  .hero::before {
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.65) 50%, rgba(0, 0, 0, 0.25) 100%);
+  }
+
   .hero-content {
     margin-left: 5%;
   }
@@ -1560,7 +1564,7 @@ body {
   }
 
   .categories {
-    top: 86px;
+    display: none !important;
   }
 
   .categories-scroll {
@@ -1568,7 +1572,7 @@ body {
   }
 
   .categories-mobile {
-    display: flex !important;
+    display: none !important;
   }
 
   .main-content {
@@ -1588,14 +1592,90 @@ body {
   .cart-btn {
     width: 100%;
     justify-content: center;
+    min-height: 56px;
+    padding: 1.25rem 2rem;
   }
 
   .modal {
     max-width: 100%;
   }
 
+  .modal-footer {
+    padding: 1rem 1.5rem;
+  }
+
+  .cart-summary {
+    margin-bottom: 1rem;
+  }
+
+  .cart-summary-row {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .cart-summary-row.total {
+    font-size: 1.1rem;
+    padding-top: 0.75rem;
+    margin-top: 0.75rem;
+  }
+
+  .cart-summary-row.highlight {
+    padding: 0.6rem;
+    font-size: 0.95rem;
+  }
+
+  .checkout-btn {
+    padding: 1rem;
+    font-size: 1rem;
+  }
+
+  .cart-item {
+    padding: 0.85rem;
+    gap: 0.75rem;
+  }
+
+  .cart-item-image-container {
+    width: 60px;
+    height: 60px;
+  }
+
+  .cart-item-name {
+    font-size: 0.9rem;
+    line-height: 1.2;
+  }
+
+  .cart-item-weight {
+    font-size: 0.8rem;
+  }
+
+  .cart-item-price {
+    font-size: 0.95rem;
+  }
+
+  .date-picker-section {
+    padding: 1rem;
+  }
+
+  .date-picker-section label {
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+  }
+
   .date-picker-section .date-options {
-    flex-direction: column;
+    flex-direction: row;
+    gap: 0.75rem;
+  }
+
+  .date-option {
+    padding: 0.85rem 0.5rem;
+  }
+
+  .date-option strong {
+    font-size: 1.1rem;
+  }
+
+  .date-option span {
+    font-size: 0.8rem;
   }
 
   .confirmation-header h1 {
