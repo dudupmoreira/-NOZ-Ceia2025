@@ -1,5 +1,33 @@
 # 🎄 Arquitetura - Ceia do Noz 2025
 
+> ⚠️ **NOTA:** Este documento contém o planejamento original do projeto. Para o estado atual e funcionalidades implementadas, consulte [README.md](README.md)
+
+## ✅ Status de Implementação (Dezembro 2025)
+
+### Implementado
+- ✅ Site principal com carrinho de compras
+- ✅ Painel administrativo (tema claro, grid compacto)
+- ✅ Integração com LeadConnector/Homio API
+- ✅ Webhook para criação de contatos
+- ✅ Custom fields mapeados corretamente
+- ✅ Sistema de confirmação via PIX
+- ✅ Badge "PIX Confirmado" e botão de confirmação
+- ✅ URL compartilhável para restaurar pedido
+- ✅ Otimização de imagens (WebP, 94% redução)
+- ✅ Deploy automático no Vercel
+- ✅ Correção de fuso horário (UTC-3)
+- ✅ Cache busting para scripts
+- ✅ Filtros e busca no painel admin
+- ✅ Atualização manual de pedidos
+
+### Stack Implementada
+- Frontend: HTML5, CSS3, JavaScript Vanilla
+- Hospedagem: Vercel
+- Integração: LeadConnector/Homio API
+- Imagens: WebP otimizado
+
+---
+
 ## Visão Geral do Projeto
 
 **Objetivo:** Redesign do site de pedidos da Ceia de Natal do Restaurante Noz Comida Afetiva, com UX/UI intuitiva (estilo iFood) e integração com Homio para automações.
