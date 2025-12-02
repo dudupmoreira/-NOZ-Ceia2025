@@ -598,6 +598,17 @@
 
         const ADMIN_PASSWORD = 'noz2025';
 
+        // Mapeamento de nomes de campos personalizados para IDs da API
+        const CUSTOM_FIELD_MAP = {
+            'produtos_pedido': 'If8oqvhkoAYNtGwiecIO',
+            'valor_entrada': '6qDwjoJADxN2x5F3zSCg',
+            'status_pedido': 'pmxAislCxjvEFYYTup4f',
+            'valor_total': 'JMNWXPU15qENbgGhx9SN',
+            'numero_pedido': '3IOhOp251a4Y5RW9CsDL',
+            'observacoes_pedido': 'hh51SkBndd383fcBr998',
+            'data_retirada': 'myBIwy68LfiKwJwFXRKl'
+        };
+
         let allPedidos = [];
         let currentFilter = 'todos';
 
@@ -866,14 +877,18 @@
 
         // Funções auxiliares
         function getCustomField(contact, fieldKey) {
+            // Verificar se existe mapeamento de ID para este campo
+            const mappedId = CUSTOM_FIELD_MAP[fieldKey];
+            
             // Tentar buscar diretamente no objeto contact
             if (contact[fieldKey] !== undefined && contact[fieldKey] !== null) {
                 return contact[fieldKey];
             }
             
-            // Tentar no array customFields com múltiplas propriedades
+            // Tentar no array customFields usando o ID mapeado ou o fieldKey original
             if (contact.customFields && Array.isArray(contact.customFields)) {
                 const field = contact.customFields.find(f => 
+                    f.id === mappedId ||  // Usar o ID mapeado primeiro
                     f.id === fieldKey || 
                     f.key === fieldKey || 
                     f.fieldKey === fieldKey ||
