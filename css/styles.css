@@ -948,9 +948,6 @@ body {
 .cart-summary-row.total {
   font-size: 1.25rem;
   font-weight: 700;
-  padding-top: 1rem;
-  border-top: 2px solid var(--color-borda);
-  margin-top: 1rem;
 }
 
 .cart-summary-row.highlight {
@@ -1621,8 +1618,6 @@ body {
 
   .cart-summary-row.total {
     font-size: 1.1rem;
-    padding-top: 0.75rem;
-    margin-top: 0.75rem;
   }
 
   .cart-summary-row.highlight {
