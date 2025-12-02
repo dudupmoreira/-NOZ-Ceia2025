@@ -866,12 +866,25 @@
 
         // Funções auxiliares
         function getCustomField(contact, fieldKey) {
-            if (!contact.customFields) return null;
+            // Tentar buscar diretamente no objeto contact
+            if (contact[fieldKey] !== undefined && contact[fieldKey] !== null) {
+                return contact[fieldKey];
+            }
             
-            const field = contact.customFields.find(f => 
-                f.id === fieldKey || f.key === fieldKey
-            );
-            return field ? field.value : null;
+            // Tentar no array customFields com múltiplas propriedades
+            if (contact.customFields && Array.isArray(contact.customFields)) {
+                const field = contact.customFields.find(f => 
+                    f.id === fieldKey || 
+                    f.key === fieldKey || 
+                    f.fieldKey === fieldKey ||
+                    f.name === fieldKey
+                );
+                if (field && field.value !== undefined) {
+                    return field.value;
+                }
+            }
+            
+            return null;
         }
 
         function formatarValor(valor) {
