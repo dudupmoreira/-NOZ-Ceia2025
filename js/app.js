@@ -657,9 +657,118 @@ function setupCategoryNav() {
 }
 
 // ============================================
+// RESTAURAÇÃO DE PEDIDO VIA URL
+// ============================================
+function checkUrlForOrder() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const pedidoParam = urlParams.get('pedido');
+  
+  if (pedidoParam) {
+    try {
+      const pedidoJson = decodeURIComponent(atob(pedidoParam));
+      const pedidoData = JSON.parse(pedidoJson);
+      showSharedOrderPage(pedidoData);
+      return true;
+    } catch (error) {
+      console.error('Erro ao decodificar pedido da URL:', error);
+      return false;
+    }
+  }
+  return false;
+}
+
+function showSharedOrderPage(pedidoData) {
+  // Extrair dados do pedido compacto
+  const orderNumber = pedidoData.n;
+  const selectedDate = pedidoData.d;
+  const items = pedidoData.i;
+  const total = pedidoData.t;
+  const entrada = pedidoData.e;
+  const clienteName = pedidoData.cliente;
+
+  document.getElementById('orderNumberDisplay').textContent = `#${orderNumber}`;
+
+  // Renderizar itens
+  document.getElementById('orderSummaryItems').innerHTML = items.map(item => `
+    <div class="order-item">
+      <span>${item.qtd}x ${item.nome} (${item.peso})</span>
+      <span>R$ ${formatPrice(item.preco)}</span>
+    </div>
+  `).join('');
+
+  // Renderizar totais
+  document.getElementById('orderSummaryTotals').innerHTML = `
+    <div class="total-row">
+      <span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+          <path d="M19 4H18V2H16V4H8V2H6V4H5C3.89 4 3.01 4.9 3.01 6L3 20C3 21.1 3.89 22 5 22H19C20.1 22 21 21.1 21 20V6C21 4.9 20.1 4 19 4M19 20H5V10H19V20M19 8H5V6H19V8M7 12H12V17H7V12Z"/>
+        </svg>
+        Retirada
+      </span>
+      <span>${selectedDate}/2025</span>
+    </div>
+    <div class="total-row big">
+      <span>Total</span>
+      <span>R$ ${formatPrice(total)}</span>
+    </div>
+    <div class="total-row highlight">
+      <span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+          <path d="M12 2C6.48 2 2 6.48 2 12S6.48 22 12 22 22 17.52 22 12 17.52 2 12 2M13.41 18.09V20H10.59V18.09C9.48 17.84 8.47 17.3 7.68 16.54L9.4 14.82C10.01 15.38 10.75 15.8 11.57 16.04V13.26L11.23 13.18C9.15 12.66 7.86 11.85 7.86 10.18C7.86 8.67 9.05 7.53 10.59 7.17V5.26H13.41V7.17C14.5 7.42 15.41 7.93 16.1 8.63L14.42 10.31C13.89 9.82 13.24 9.47 12.57 9.25V12.03L12.91 12.11C15.14 12.66 16.23 13.55 16.23 15.18C16.23 16.73 15.07 17.84 13.41 18.09M11.57 9.18V7.42C10.71 7.58 10.14 8.12 10.14 8.8C10.14 9.38 10.46 9.76 11.57 10.08V9.18M13.41 15.95V17.71C14.27 17.55 14.84 17.03 14.84 16.33C14.84 15.75 14.52 15.37 13.41 15.05V15.95Z"/>
+        </svg>
+        Entrada (50%)
+      </span>
+      <span>R$ ${formatPrice(entrada)}</span>
+    </div>
+  `;
+
+  // Configurar PIX
+  document.getElementById('pixAmount').textContent = `R$ ${formatPrice(entrada)}`;
+
+  const pixCode = gerarCodigoPix(entrada);
+  document.getElementById('pixCode').value = pixCode;
+
+  const qrContainer = document.querySelector('.pix-qrcode');
+  qrContainer.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(pixCode)}" alt="QR Code PIX">`;
+
+  // Configurar botão WhatsApp
+  const itensResumo = items.map(item => 
+    `• ${item.qtd}x ${item.nome} (${item.peso})`
+  ).join('\n');
+
+  const mensagemWhatsApp = encodeURIComponent(
+    `Olá! Acabei de fazer o pedido *${orderNumber}* para a Ceia de Natal. \u{1F384}\n\n` +
+    `*\u{1F4CB} Itens do pedido:*\n${itensResumo}\n\n` +
+    `\u{1F4C5} *Retirada:* ${selectedDate}/2025\n` +
+    `\u{1F4B0} *Total:* R$ ${formatPrice(total)}\n` +
+    `\u{1F4B3} *Entrada (50%):* R$ ${formatPrice(entrada)}\n\n` +
+    `\u{1F464} *Nome:* ${clienteName}\n\n` +
+    `Segue o comprovante do PIX em anexo. \u{2705}`
+  );
+  
+  document.getElementById('whatsappBtn').onclick = () => {
+    window.open(`https://wa.me/${CONFIG.whatsappNumber}?text=${mensagemWhatsApp}`, '_blank');
+  };
+
+  // Mostrar página de confirmação
+  const mainPage = document.getElementById('mainPage');
+  const confirmPage = document.getElementById('confirmationPage');
+  
+  mainPage.style.display = 'none';
+  confirmPage.classList.add('visible');
+  confirmPage.style.opacity = '1';
+}
+
+// ============================================
 // INICIALIZAÇÃO
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
-  renderCardapio();
-  setupCategoryNav();
+  // Verificar se há um pedido compartilhado na URL
+  const hasSharedOrder = checkUrlForOrder();
+  
+  // Se não houver pedido compartilhado, inicializar normalmente
+  if (!hasSharedOrder) {
+    renderCardapio();
+    setupCategoryNav();
+  }
 });
