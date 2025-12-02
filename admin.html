@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Ceia do Noz 2025</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="imagens/favicon.png">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-vinho: #5c0f1e;
+            --color-dourado: #d4af37;
+            --color-dourado-claro: #f4e4b4;
+            --color-bg-dark: #1a1a1a;
+            --color-bg-card: #2a2a2a;
+            --color-text: #ffffff;
+            --color-text-muted: #999999;
+            --color-success: #28a745;
+            --color-danger: #dc3545;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--color-vinho) 0%, #1a1a1a 100%);
+            color: var(--color-text);
+            min-height: 100vh;
+        }
+
+        /* Login Screen */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-box {
+            background: var(--color-bg-card);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .login-logo {
+            color: var(--color-dourado);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .login-title {
+            color: var(--color-dourado-claro);
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--color-dourado-claro);
+            font-size: 0.9rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--color-dourado);
+            background: var(--color-bg-dark);
+            color: var(--color-text);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--color-dourado-claro);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: var(--color-dourado);
+            color: var(--color-vinho);
+        }
+
+        .btn-primary:hover {
+            background: var(--color-dourado-claro);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-success {
+            background: var(--color-success);
+            color: white;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .btn-whatsapp {
+            background: #25d366;
+            color: white;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        .btn-whatsapp:hover {
+            background: #20ba5a;
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            background: var(--color-danger);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        .dashboard-header {
+            background: var(--color-bg-card);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .dashboard-title {
+            color: var(--color-dourado);
+            font-size: 2rem;
+        }
+
+        .dashboard-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            background: var(--color-bg-dark);
+            color: var(--color-text);
+            border: 2px solid var(--color-dourado);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn.active {
+            background: var(--color-dourado);
+            color: var(--color-vinho);
+        }
+
+        .filter-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-logout {
+            background: var(--color-danger);
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .btn-logout:hover {
+            background: #c82333;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--color-bg-card);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid var(--color-dourado);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            color: var(--color-dourado);
+            font-weight: bold;
+        }
+
+        .stat-label {
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .pedidos-container {
+            display: grid;
+            gap: 20px;
+        }
+
+        .pedido-card {
+            background: var(--color-bg-card);
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid var(--color-dourado);
+            transition: all 0.3s ease;
+        }
+
+        .pedido-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+        }
+
+        .pedido-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .pedido-numero {
+            color: var(--color-dourado);
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .pedido-data {
+            background: var(--color-vinho);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .pedido-info {
+            margin-bottom: 15px;
+        }
+
+        .info-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .info-label {
+            color: var(--color-text-muted);
+            min-width: 80px;
+        }
+
+        .info-value {
+            color: var(--color-text);
+            font-weight: 500;
+        }
+
+        .pedido-produtos {
+            background: var(--color-bg-dark);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .produtos-title {
+            color: var(--color-dourado-claro);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .produto-item {
+            color: var(--color-text);
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .produto-item:last-child {
+            border-bottom: none;
+        }
+
+        .pedido-valores {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: var(--color-bg-dark);
+            border-radius: 10px;
+        }
+
+        .valor-item {
+            text-align: center;
+        }
+
+        .valor-label {
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .valor-amount {
+            color: var(--color-dourado);
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .pedido-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--color-dourado);
+            font-size: 1.2rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--color-text-muted);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .observacoes {
+            background: var(--color-bg-dark);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .dashboard-actions {
+                flex-direction: column;
+            }
+
+            .filter-group {
+                flex-direction: column;
+            }
+
+            .pedido-valores {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .pedido-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginContainer" class="login-container">
+        <div class="login-box">
+            <div class="login-logo">🎄</div>
+            <h1 class="login-title">Ceia do Noz 2025</h1>
+            <h2 style="color: var(--color-dourado-claro); font-size: 1.1rem; margin-bottom: 30px;">Painel Administrativo</h2>
+            
+            <div class="input-group">
+                <label for="password">Senha de Acesso</label>
+                <input type="password" id="password" placeholder="Digite a senha">
+            </div>
+            
+            <button class="btn btn-primary" onclick="login()">Entrar</button>
+            
+            <div id="loginError" class="error-message"></div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">📋 Pedidos da Ceia</h1>
+            <div class="dashboard-actions">
+                <div class="filter-group">
+                    <button class="filter-btn active" onclick="filterPedidos('todos')" data-filter="todos">Todos</button>
+                    <button class="filter-btn" onclick="filterPedidos('24/12')" data-filter="24/12">24/12</button>
+                    <button class="filter-btn" onclick="filterPedidos('31/12')" data-filter="31/12">31/12</button>
+                </div>
+                <button class="btn-logout" onclick="logout()">Sair</button>
+            </div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number" id="totalPedidos">0</div>
+                <div class="stat-label">Total de Pedidos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="valorTotal">R$ 0</div>
+                <div class="stat-label">Valor Total</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalEntrada">R$ 0</div>
+                <div class="stat-label">Total Entrada (50%)</div>
+            </div>
+        </div>
+
+        <div id="pedidosContainer" class="pedidos-container">
+            <div class="loading">Carregando pedidos...</div>
+        </div>
+    </div>
+
+    <script>
+        // Configuração da API
+        const API_CONFIG = {
+            baseUrl: 'https://services.leadconnectorhq.com',
+            token: 'pit-eb3d06dd-5ec1-4a10-9aba-76b6b8490f1a',
+            locationId: 'iuYB2N2aOtvi7dlzJ1sQ',
+            version: '2021-07-28'
+        };
+
+        // Senha de acesso (em produção, isso deveria estar no backend)
+        const ADMIN_PASSWORD = 'noz2025';
+
+        let allPedidos = [];
+        let currentFilter = 'todos';
+
+        // Login
+        function login() {
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('loginError');
+
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('loginContainer').style.display = 'none';
+                document.getElementById('dashboard').classList.add('active');
+                loadPedidos();
+            } else {
+                errorDiv.textContent = 'Senha incorreta!';
+                errorDiv.style.display = 'block';
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        // Permitir login com Enter
+        document.getElementById('password')?.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
+
+        // Logout
+        function logout() {
+            document.getElementById('loginContainer').style.display = 'flex';
+            document.getElementById('dashboard').classList.remove('active');
+            document.getElementById('password').value = '';
+        }
+
+        // Carregar pedidos da API
+        async function loadPedidos() {
+            const container = document.getElementById('pedidosContainer');
+            container.innerHTML = '<div class="loading">Carregando pedidos...</div>';
+
+            try {
+                // Buscar contatos com a tag 'aguardando-pix'
+                const response = await fetch(
+                    `${API_CONFIG.baseUrl}/contacts/?locationId=${API_CONFIG.locationId}&limit=100`,
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${API_CONFIG.token}`,
+                            'Version': API_CONFIG.version,
+                            'Accept': 'application/json'
+                        }
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error(`Erro na API: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                // Filtrar apenas contatos com a tag 'aguardando-pagamento'
+                allPedidos = (data.contacts || []).filter(contact => 
+                    contact.tags && contact.tags.includes('aguardando-pagamento')
+                );
+
+                displayPedidos();
+                updateStats();
+            } catch (error) {
+                console.error('Erro ao carregar pedidos:', error);
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">⚠️</div>
+                        <h3>Erro ao carregar pedidos</h3>
+                        <p>${error.message}</p>
+                        <button class="btn btn-primary" onclick="loadPedidos()" style="max-width: 300px; margin: 20px auto;">
+                            Tentar Novamente
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // Exibir pedidos
+        function displayPedidos() {
+            const container = document.getElementById('pedidosContainer');
+            
+            let pedidosFiltrados = allPedidos;
+            
+            // Aplicar filtro de data
+            if (currentFilter !== 'todos') {
+                pedidosFiltrados = allPedidos.filter(pedido => {
+                    const dataRetirada = getCustomField(pedido, 'data_retirada') || '';
+                    return dataRetirada.includes(currentFilter);
+                });
+            }
+
+            if (pedidosFiltrados.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📦</div>
+                        <h3>Nenhum pedido aguardando confirmação</h3>
+                        <p>Todos os pedidos foram confirmados ou não há pedidos pendentes.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = pedidosFiltrados.map(pedido => createPedidoCard(pedido)).join('');
+        }
+
+        // Criar card de pedido
+        function createPedidoCard(pedido) {
+            const numeroPedido = getCustomField(pedido, 'numero_pedido') || 'N/A';
+            const dataRetirada = getCustomField(pedido, 'data_retirada') || 'N/A';
+            const produtos = getCustomField(pedido, 'produtos_pedido') || 'Nenhum produto';
+            const valorTotal = getCustomField(pedido, 'valor_total') || 0;
+            const valorEntrada = getCustomField(pedido, 'valor_entrada') || 0;
+            const observacoes = getCustomField(pedido, 'observacoes') || '';
+            
+            const telefone = pedido.phone || '';
+            const whatsappLink = telefone ? `https://wa.me/${telefone.replace(/\D/g, '')}` : '#';
+            
+            const produtosList = produtos.split('\n')
+                .filter(p => p.trim())
+                .map(p => `<div class="produto-item">${p}</div>`)
+                .join('');
+
+            return `
+                <div class="pedido-card" data-pedido-id="${pedido.id}">
+                    <div class="pedido-header">
+                        <div class="pedido-numero">#${numeroPedido}</div>
+                        <div class="pedido-data">📅 Retirada: ${formatarData(dataRetirada)}</div>
+                    </div>
+                    
+                    <div class="pedido-info">
+                        <div class="info-row">
+                            <span class="info-label">👤 Cliente:</span>
+                            <span class="info-value">${pedido.name || pedido.firstName || 'N/A'}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">📱 Telefone:</span>
+                            <span class="info-value">${pedido.phone || 'N/A'}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">📧 Email:</span>
+                            <span class="info-value">${pedido.email || 'N/A'}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="pedido-produtos">
+                        <div class="produtos-title">🍽️ Produtos:</div>
+                        ${produtosList}
+                    </div>
+                    
+                    <div class="pedido-valores">
+                        <div class="valor-item">
+                            <div class="valor-label">Valor Total</div>
+                            <div class="valor-amount">${formatarValor(valorTotal)}</div>
+                        </div>
+                        <div class="valor-item">
+                            <div class="valor-label">Entrada (50%)</div>
+                            <div class="valor-amount">${formatarValor(valorEntrada)}</div>
+                        </div>
+                    </div>
+                    
+                    ${observacoes ? `<div class="observacoes">💬 ${observacoes}</div>` : ''}
+                    
+                    <div class="pedido-actions">
+                        <button class="btn btn-success" onclick="confirmarPix('${pedido.id}', '${numeroPedido}')">
+                            ✅ Confirmar PIX
+                        </button>
+                        ${telefone ? `<a href="${whatsappLink}" target="_blank" class="btn btn-whatsapp">💬 WhatsApp</a>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Confirmar PIX
+        async function confirmarPix(contactId, numeroPedido) {
+            if (!confirm(`Confirmar o PIX do pedido #${numeroPedido}?`)) {
+                return;
+            }
+
+            try {
+                // Buscar o contato para pegar as tags atuais
+                const getResponse = await fetch(
+                    `${API_CONFIG.baseUrl}/contacts/${contactId}`,
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${API_CONFIG.token}`,
+                            'Version': API_CONFIG.version,
+                            'Accept': 'application/json'
+                        }
+                    }
+                );
+
+                if (!getResponse.ok) {
+                    throw new Error('Erro ao buscar contato');
+                }
+
+                const contact = await getResponse.json();
+                const currentTags = contact.contact?.tags || [];
+                
+                // Remover 'aguardando-pagamento' e adicionar 'pix-confirmado'
+                const newTags = currentTags
+                    .filter(tag => tag !== 'aguardando-pagamento')
+                    .concat('pix-confirmado');
+
+                // Atualizar o contato
+                const updateResponse = await fetch(
+                    `${API_CONFIG.baseUrl}/contacts/${contactId}`,
+                    {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `Bearer ${API_CONFIG.token}`,
+                            'Version': API_CONFIG.version,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({ tags: newTags })
+                    }
+                );
+
+                if (!updateResponse.ok) {
+                    throw new Error('Erro ao atualizar contato');
+                }
+
+                alert(`✅ PIX confirmado para o pedido #${numeroPedido}!`);
+                
+                // Recarregar pedidos
+                await loadPedidos();
+                
+            } catch (error) {
+                console.error('Erro ao confirmar PIX:', error);
+                alert(`❌ Erro ao confirmar PIX: ${error.message}`);
+            }
+        }
+
+        // Filtrar pedidos
+        function filterPedidos(filter) {
+            currentFilter = filter;
+            
+            // Atualizar botões
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.filter === filter) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            displayPedidos();
+            updateStats();
+        }
+
+        // Atualizar estatísticas
+        function updateStats() {
+            let pedidosFiltrados = allPedidos;
+            
+            if (currentFilter !== 'todos') {
+                pedidosFiltrados = allPedidos.filter(pedido => {
+                    const dataRetirada = getCustomField(pedido, 'data_retirada') || '';
+                    return dataRetirada.includes(currentFilter);
+                });
+            }
+
+            const total = pedidosFiltrados.length;
+            const valorTotal = pedidosFiltrados.reduce((sum, pedido) => {
+                return sum + (parseFloat(getCustomField(pedido, 'valor_total')) || 0);
+            }, 0);
+            const valorEntrada = pedidosFiltrados.reduce((sum, pedido) => {
+                return sum + (parseFloat(getCustomField(pedido, 'valor_entrada')) || 0);
+            }, 0);
+
+            document.getElementById('totalPedidos').textContent = total;
+            document.getElementById('valorTotal').textContent = formatarValor(valorTotal);
+            document.getElementById('totalEntrada').textContent = formatarValor(valorEntrada);
+        }
+
+        // Funções auxiliares
+        function getCustomField(contact, fieldKey) {
+            if (!contact.customFields) return null;
+            
+            const field = contact.customFields.find(f => f.id === fieldKey || f.key === fieldKey);
+            return field ? field.value : null;
+        }
+
+        function formatarValor(valor) {
+            const num = parseFloat(valor) || 0;
+            return `R$ ${num.toFixed(2).replace('.', ',')}`;
+        }
+
+        function formatarData(data) {
+            if (!data) return 'N/A';
+            
+            // Se já estiver no formato DD/MM
+            if (data.includes('/')) return data;
+            
+            // Se estiver no formato YYYY-MM-DD
+            if (data.includes('-')) {
+                const [ano, mes, dia] = data.split('-');
+                return `${dia}/${mes}`;
+            }
+            
+            return data;
+        }
+
+        // Auto-refresh a cada 30 segundos (opcional)
+        setInterval(() => {
+            if (document.getElementById('dashboard').classList.contains('active')) {
+                loadPedidos();
+            }
+        }, 30000);
+    </script>
+</body>
+</html>
