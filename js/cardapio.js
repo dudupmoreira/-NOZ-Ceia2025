@@ -95,7 +95,7 @@ const cardapio = {
     {
       id: "bacalhau-vovo-helia",
       nome: "Bacalhau da Vovó Hélia",
-      descricao: "Receita tradicional de família, preparada com carinho e ingredientes selecionados",
+      descricao: "Lombo de Bacalhau gadus morhua, cebola, tomate, alho, batata, azeitona preta, salsa e azeite",
       imagem: null,
       opcoes: [
         { peso: "500g", preco: 150 },
