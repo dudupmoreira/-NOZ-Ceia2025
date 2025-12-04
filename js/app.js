@@ -611,6 +611,13 @@ function showConfirmationPage(pedido) {
     `Segue o comprovante do PIX em anexo.`
   );
   document.getElementById('whatsappBtn').onclick = () => {
+    // Tracking: WhatsApp Lead (envio de comprovante)
+    trackWhatsAppClick({
+      location: 'confirmation',
+      orderNumber: pedido.numero_pedido,
+      orderValue: total
+    });
+    
     window.open(`https://wa.me/${CONFIG.whatsappNumber}?text=${mensagemWhatsApp}`, '_blank');
   };
 

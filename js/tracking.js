@@ -378,6 +378,81 @@ function trackPurchase(purchaseData) {
 }
 
 // ============================================
+// EVENTO: WhatsApp Click (Clique no WhatsApp)
+// ============================================
+function trackWhatsAppClick(clickData) {
+  const { location, orderNumber, orderValue } = clickData;
+
+  // Meta Pixel - Usar evento Contact
+  if (isPixelLoaded()) {
+    const pixelData = {
+      content_name: 'WhatsApp Contact',
+      contact_method: 'whatsapp',
+      click_location: location
+    };
+
+    // Se for o clique do comprovante, adicionar dados do pedido
+    if (orderNumber) {
+      pixelData.order_id = orderNumber;
+      pixelData.value = orderValue;
+      pixelData.currency = 'BRL';
+      // Usar evento Lead para tracking de conversão
+      fbq('track', 'Lead', pixelData);
+    } else {
+      // Usar evento Contact para cliques gerais
+      fbq('track', 'Contact', pixelData);
+    }
+  }
+
+  // Google Analytics 4
+  if (isGA4Loaded()) {
+    const ga4Data = {
+      contact_method: 'whatsapp',
+      click_location: location
+    };
+
+    // Se tiver pedido, enviar como generate_lead com valor
+    if (orderNumber) {
+      gtag('event', 'generate_lead', {
+        ...ga4Data,
+        currency: 'BRL',
+        value: orderValue,
+        order_number: orderNumber
+      });
+    } else {
+      // Clique geral como custom event
+      gtag('event', 'contact_click', ga4Data);
+    }
+  }
+
+  // Google Tag Manager / DataLayer
+  if (isGTMLoaded()) {
+    const gtmData = {
+      event: orderNumber ? 'whatsapp_lead' : 'whatsapp_contact',
+      contact_method: 'whatsapp',
+      click_location: location
+    };
+
+    // Adicionar dados do pedido se disponível
+    if (orderNumber) {
+      gtmData.order_details = {
+        order_number: orderNumber,
+        order_value: orderValue,
+        currency: 'BRL'
+      };
+    }
+
+    dataLayer.push(gtmData);
+  }
+
+  const logMessage = orderNumber 
+    ? `📱 Track: WhatsApp Lead - ${location} - Pedido ${orderNumber}`
+    : `📱 Track: WhatsApp Contact - ${location}`;
+  
+  console.log(logMessage);
+}
+
+// ============================================
 // UTILITÁRIO: Obter categoria do produto
 // ============================================
 function getCategoryFromProductId(productId) {
