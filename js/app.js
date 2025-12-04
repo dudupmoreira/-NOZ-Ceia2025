@@ -191,6 +191,18 @@ function addToCart(productId, optionIndex) {
 
   updateCartUI();
   showToast('Item adicionado!');
+
+  // Tracking: AddToCart
+  const product = findProduct(productId);
+  const opcao = product.opcoes[optionIndex];
+  trackAddToCart({
+    id: productId,
+    nome: product.nome,
+    preco: opcao.preco,
+    quantidade: 1,
+    peso: opcao.peso,
+    categoria: getCategoryFromProductId(productId)
+  });
 }
 
 function updateQuantity(productId, optionIndex, delta) {
@@ -208,6 +220,24 @@ function updateQuantity(productId, optionIndex, delta) {
 }
 
 function removeFromCart(productId, optionIndex) {
+  // Capturar dados antes de remover para o tracking
+  const itemToRemove = cart.find(item => item.productId === productId && item.optionIndex === optionIndex);
+  
+  if (itemToRemove) {
+    const product = findProduct(productId);
+    const opcao = product.opcoes[optionIndex];
+    
+    // Tracking: RemoveFromCart
+    trackRemoveFromCart({
+      id: productId,
+      nome: product.nome,
+      preco: opcao.preco,
+      quantidade: itemToRemove.quantity,
+      peso: opcao.peso,
+      categoria: getCategoryFromProductId(productId)
+    });
+  }
+
   cart = cart.filter(item => !(item.productId === productId && item.optionIndex === optionIndex));
   updateCartUI();
 }
@@ -243,6 +273,30 @@ function openCart() {
   document.body.style.overflow = 'hidden';
   renderCartBody();
   renderCartFooter();
+
+  // Tracking: InitiateCheckout
+  if (cart.length > 0) {
+    const total = getCartTotal();
+    const numItens = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const items = cart.map(item => {
+      const product = findProduct(item.productId);
+      const opcao = product.opcoes[item.optionIndex];
+      return {
+        id: item.productId,
+        nome: product.nome,
+        preco: opcao.preco,
+        quantity: item.quantity,
+        peso: opcao.peso,
+        categoria: getCategoryFromProductId(item.productId)
+      };
+    });
+
+    trackInitiateCheckout({
+      valorTotal: total,
+      numItens: numItens,
+      items: items
+    });
+  }
 }
 
 function closeCart() {
@@ -259,6 +313,18 @@ function selectDate(date) {
 function updateCustomerData(field, value) {
   customerData[field] = value;
   renderCartFooter();
+
+  // Tracking: AddPaymentInfo (quando o nome é preenchido)
+  if (field === 'nome' && value && value.length > 3) {
+    const total = getCartTotal();
+    const numItens = cart.reduce((sum, item) => sum + item.quantity, 0);
+    
+    trackAddPaymentInfo({
+      valorTotal: total,
+      numItens: numItens,
+      customerName: value
+    });
+  }
 }
 
 function renderCartBody() {
@@ -449,6 +515,33 @@ async function finalizarPedido() {
     console.log('Webhook enviado (ou erro ignorado):', error);
   }
 
+  // ⭐ Tracking: Purchase (EVENTO PRINCIPAL)
+  const numItens = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const items = cart.map(item => {
+    const product = findProduct(item.productId);
+    const opcao = product.opcoes[item.optionIndex];
+    return {
+      id: item.productId,
+      nome: product.nome,
+      preco: opcao.preco,
+      quantity: item.quantity,
+      peso: opcao.peso,
+      categoria: getCategoryFromProductId(item.productId)
+    };
+  });
+
+  trackPurchase({
+    transactionId: orderNumber,
+    valorTotal: total,
+    valorEntrada: entrada,
+    numItens: numItens,
+    items: items,
+    customerName: customerData.nome,
+    customerPhone: customerData.telefone,
+    customerEmail: customerData.email,
+    dataRetirada: selectedDate
+  });
+
   showConfirmationPage(pedido);
 }
 
@@ -577,6 +670,22 @@ function openImageZoom(imageSrc) {
   zoomedImage.src = imageSrc;
   overlay.classList.add('visible');
   document.body.style.overflow = 'hidden';
+
+  // Tracking: ViewContent
+  // Tentar identificar o produto pela imagem
+  for (const [category, products] of Object.entries(cardapio)) {
+    const product = products.find(p => p.imagem === imageSrc);
+    if (product) {
+      const preco = product.opcoes[0].preco; // Pegar primeira opção como referência
+      trackViewContent({
+        id: product.id,
+        nome: product.nome,
+        preco: preco,
+        categoria: getCategoryFromProductId(product.id)
+      });
+      break;
+    }
+  }
 }
 
 function closeImageZoom() {
