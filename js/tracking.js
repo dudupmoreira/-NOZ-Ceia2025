@@ -3,6 +3,39 @@
 // Meta Pixel + Google Analytics 4 + GTM
 // ============================================
 
+// ============================================
+// CAPTURA DE UTMs
+// ============================================
+function captureUTMs() {
+  const params = new URLSearchParams(window.location.search);
+  const utmData = {
+    utm_source: params.get('utm_source') || '',
+    utm_medium: params.get('utm_medium') || '',
+    utm_campaign: params.get('utm_campaign') || '',
+    utm_term: params.get('utm_term') || '',
+    utm_content: params.get('utm_content') || '',
+    landing_page: window.location.href,
+    first_visit: new Date().toISOString()
+  };
+  
+  // Só salva se tiver alguma UTM na URL
+  if (utmData.utm_source || utmData.utm_medium || utmData.utm_campaign) {
+    sessionStorage.setItem('utmData', JSON.stringify(utmData));
+    console.log('📊 UTMs capturadas:', utmData);
+  }
+  
+  return utmData;
+}
+
+function getUTMs() {
+  const saved = sessionStorage.getItem('utmData');
+  return saved ? JSON.parse(saved) : null;
+}
+
+// ============================================
+// FUNÇÕES AUXILIARES
+// ============================================
+
 // Função auxiliar para verificar se o pixel está carregado
 function isPixelLoaded() {
   return typeof fbq !== 'undefined';

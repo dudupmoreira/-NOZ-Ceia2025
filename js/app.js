@@ -473,6 +473,9 @@ async function finalizarPedido() {
   const total = getCartTotal();
   const entrada = total / 2;
 
+  // Capturar UTMs salvas
+  const utmData = getUTMs() || {};
+
   const pedido = {
     numero_pedido: orderNumber,
     data_retirada: selectedDate === '24/12' ? '2025-12-24' : '2025-12-31',
@@ -500,7 +503,13 @@ async function finalizarPedido() {
     valor_total: total,
     valor_entrada: entrada,
     status_pedido: "Aguardando PIX",
-    created_at: new Date().toISOString()
+    created_at: new Date().toISOString(),
+    // UTMs de origem
+    utm_source: utmData.utm_source || 'direto',
+    utm_medium: utmData.utm_medium || 'none',
+    utm_campaign: utmData.utm_campaign || '',
+    utm_term: utmData.utm_term || '',
+    utm_content: utmData.utm_content || ''
   };
 
   try {

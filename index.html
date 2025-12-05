@@ -437,7 +437,15 @@
 
   <!-- Scripts -->
   <script src="js/cardapio.js?v=20251202-2"></script>
-  <script src="js/tracking.js?v=20251204"></script>
-  <script src="js/app.js?v=20251204"></script>
+  <script src="js/tracking.js?v=20251205"></script>
+  <script src="js/app.js?v=20251205"></script>
+  
+  <!-- Inicializar captura de UTMs -->
+  <script>
+    // Capturar UTMs na entrada do site
+    if (typeof captureUTMs === 'function') {
+      captureUTMs();
+    }
+  </script>
 </body>
 </html>
