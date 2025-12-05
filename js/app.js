@@ -4,6 +4,7 @@
 const CONFIG = {
   whatsappNumber: "5527997016929",
   webhookUrl: "https://services.leadconnectorhq.com/hooks/iuYB2N2aOtvi7dlzJ1sQ/webhook-trigger/138b2fb5-81f4-43ba-8dc2-189fddb645c2",
+  googleSheetsUrl: "https://script.google.com/macros/s/AKfycbyB620wBS4Sji4SGjJb-Plj3vXBGGREaEn9S5B9xCfYbcu1HixDZEkXg2QYUUllqs2glQ/exec",
   pixCNPJ: "33339742000103",
   pixNome: "NOZ COMIDA AFETIVA",
   pixCidade: "VITORIA",
@@ -520,8 +521,25 @@ async function finalizarPedido() {
       },
       body: JSON.stringify(pedido)
     });
+    console.log('✅ Dados enviados para Homio');
   } catch (error) {
-    console.log('Webhook enviado (ou erro ignorado):', error);
+    console.log('❌ Erro ao enviar para Homio:', error);
+  }
+
+  // 📊 Enviar para Google Sheets
+  if (CONFIG.googleSheetsUrl) {
+    try {
+      await fetch(CONFIG.googleSheetsUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(pedido)
+      });
+      console.log('✅ Dados enviados para Google Sheets');
+    } catch (error) {
+      console.log('❌ Erro ao enviar para Sheets:', error);
+    }
   }
 
   // ⭐ Tracking: Purchase (EVENTO PRINCIPAL)
