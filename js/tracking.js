@@ -486,6 +486,75 @@ function trackWhatsAppClick(clickData) {
 }
 
 // ============================================
+// EVENTO: Purchase Real (Confirmação PIX no Admin) 💰
+// ============================================
+function trackPurchaseReal(purchaseData) {
+  const {
+    transactionId,
+    valorTotal,
+    valorEntrada,
+    customerName,
+    customerPhone,
+    customerEmail,
+    dataRetirada
+  } = purchaseData;
+
+  // Meta Pixel - Evento customizado
+  if (isPixelLoaded()) {
+    fbq('trackCustom', 'PurchaseReal', {
+      content_type: 'product',
+      value: valorTotal,
+      currency: 'BRL',
+      order_id: transactionId,
+      entry_value: valorEntrada,
+      customer_name: customerName,
+      customer_phone: customerPhone,
+      pickup_date: dataRetirada,
+      payment_confirmed: true
+    });
+  }
+
+  // Google Analytics 4 - Evento customizado
+  if (isGA4Loaded()) {
+    gtag('event', 'purchase_real', {
+      transaction_id: transactionId,
+      value: valorTotal,
+      currency: 'BRL',
+      entry_value: valorEntrada,
+      customer_name: customerName,
+      customer_phone: customerPhone,
+      customer_email: customerEmail,
+      pickup_date: dataRetirada,
+      payment_method: 'pix',
+      payment_confirmed: true
+    });
+  }
+
+  // Google Tag Manager / DataLayer
+  if (isGTMLoaded()) {
+    dataLayer.push({
+      event: 'purchase_real',
+      purchase_confirmed: {
+        transaction_id: transactionId,
+        value: valorTotal,
+        entry_value: valorEntrada,
+        currency: 'BRL',
+        customer_name: customerName,
+        customer_phone: customerPhone,
+        customer_email: customerEmail,
+        pickup_date: dataRetirada,
+        payment_method: 'pix',
+        payment_confirmed: true,
+        confirmed_at: new Date().toISOString(),
+        confirmed_by: 'admin_panel'
+      }
+    });
+  }
+
+  console.log('💰 Track: PurchaseReal - Pedido', transactionId, 'PIX CONFIRMADO - R$', valorTotal.toFixed(2));
+}
+
+// ============================================
 // UTILITÁRIO: Obter categoria do produto
 // ============================================
 function getCategoryFromProductId(productId) {
