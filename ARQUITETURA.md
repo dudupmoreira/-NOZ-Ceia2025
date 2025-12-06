@@ -1,176 +1,45 @@
-# 🎄 Arquitetura - Ceia do Noz 2025
+# 🏗️ Arquitetura Técnica - Ceia do Noz 2025
 
-> ⚠️ **NOTA:** Este documento contém o planejamento original do projeto. Para o estado atual e funcionalidades implementadas, consulte [README.md](README.md)
+## Visão Geral
 
-## ✅ Status de Implementação (Dezembro 2025)
+Sistema web para gerenciamento de pedidos da Ceia de Natal 2025 do Restaurante Noz Comida Afetiva, com integração completa ao CRM Homio/LeadConnector e sistema de tracking de conversões.
 
-### Implementado
-- ✅ Site principal com carrinho de compras
-- ✅ Painel administrativo (tema claro, grid compacto)
-- ✅ Integração com LeadConnector/Homio API
-- ✅ Webhook para criação de contatos
-- ✅ Custom fields mapeados corretamente
-- ✅ Sistema de confirmação via PIX
-- ✅ Badge "PIX Confirmado" e botão de confirmação
-- ✅ URL compartilhável para restaurar pedido
-- ✅ Otimização de imagens (WebP, 94% redução)
-- ✅ Deploy automático no Vercel
-- ✅ Correção de fuso horário (UTC-3)
-- ✅ Cache busting para scripts
-- ✅ Filtros e busca no painel admin
-- ✅ Atualização manual de pedidos
-
-### Stack Implementada
-- Frontend: HTML5, CSS3, JavaScript Vanilla
-- Hospedagem: Vercel
-- Integração: LeadConnector/Homio API
-- Imagens: WebP otimizado
-
----
-
-## Visão Geral do Projeto
-
-**Objetivo:** Redesign do site de pedidos da Ceia de Natal do Restaurante Noz Comida Afetiva, com UX/UI intuitiva (estilo iFood) e integração com Homio para automações.
-
-**Fluxo Principal:**
-```
-[Landing Page] → [Seleção de Produtos] → [Carrinho] → [Dados do Cliente] → [Página de Confirmação com PIX]
-                                                                                    ↓
-                                                                            [Webhook → Homio]
-                                                                                    ↓
-                                                                            [Automações WhatsApp]
-```
-
----
-
-## 1. Arquitetura Técnica
-
-### Stack Recomendada
+### Stack Tecnológica
 
 | Camada | Tecnologia | Justificativa |
 |--------|------------|---------------|
-| **Frontend** | React + Vite | Performance, SEO, fácil manutenção |
-| **Estilização** | Tailwind CSS | Responsivo, rápido desenvolvimento |
-| **Hospedagem** | Vercel / Netlify | Deploy simples, SSL grátis, CDN global |
-| **Integração** | Homio Inbound Webhook | Criar contatos e disparar workflows |
-| **Domínio** | ceiadonoz.nozcomidaafetiva.com.br | Manter o mesmo |
+| **Frontend** | HTML5, CSS3, JavaScript Vanilla | Performance, sem dependências, fácil manutenção |
+| **Estilização** | CSS Grid, Flexbox, CSS Variables | Responsivo, moderno, sem frameworks |
+| **API/CRM** | LeadConnector/Homio API | Gestão de contatos e automações |
+| **Tracking** | Meta Pixel, GA4, GTM | Rastreamento de conversões e ROI |
+| **Hospedagem** | Vercel | Deploy automático, SSL, CDN global |
+| **Imagens** | WebP | Otimização (94% redução de tamanho) |
+| **Versionamento** | Git + GitHub | Controle de versão e colaboração |
 
-### Alternativa Simplificada (Single HTML)
-Se preferir algo mais simples de manter:
-- HTML + CSS + JavaScript vanilla
-- Hospedagem no próprio servidor ou GitHub Pages
-- Sem necessidade de build/deploy complexo
+### Status de Implementação
 
----
+#### ✅ Funcionalidades Completas
+- Site principal com carrinho de compras interativo
+- Painel administrativo com filtros avançados
+- Integração completa com LeadConnector/Homio API
+- Sistema de confirmação via PIX
+- Tracking de eventos (Meta Pixel, GA4, GTM)
+- Captura automática de UTMs
+- Otimização de imagens (WebP)
+- Deploy automático no Vercel
+- Correção de fuso horário (UTC-3)
+- URL compartilhável de pedidos
 
-## 2. Estrutura de Páginas
+#### 🔄 Em Evolução
+- Sistema de relatórios e analytics
+- Notificações em tempo real
+- Busca avançada no painel admin
 
-### Página 1: Landing + Cardápio (Home)
-```
-┌─────────────────────────────────────────────────────────┐
-│  🎄 HEADER                                              │
-│  Logo Noz | "Ceia de Natal 2025"                       │
-│  [Retirada: 24/12 ▼] [31/12 ▼]                         │
-├─────────────────────────────────────────────────────────┤
-│  HERO SECTION                                           │
-│  "Sua ceia com o sabor de casa"                        │
-│  Imagem principal do site atual                        │
-├─────────────────────────────────────────────────────────┤
-│  CATEGORIAS (tabs ou scroll horizontal)                │
-│  [Entradas] [Proteínas] [Acompanhamentos] [Sobremesa]  │
-├─────────────────────────────────────────────────────────┤
-│  GRID DE PRODUTOS (estilo iFood)                       │
-│  ┌─────────┐ ┌─────────┐ ┌─────────┐                   │
-│  │  Foto   │ │  Foto   │ │  Foto   │                   │
-│  │  Nome   │ │  Nome   │ │  Nome   │                   │
-│  │  Desc   │ │  Desc   │ │  Desc   │                   │
-│  │ [+] R$  │ │ [+] R$  │ │ [+] R$  │                   │
-│  └─────────┘ └─────────┘ └─────────┘                   │
-├─────────────────────────────────────────────────────────┤
-│  CARRINHO FLUTUANTE (bottom)                           │
-│  [🛒 Ver carrinho (3 itens) - R$ 450,00]              │
-└─────────────────────────────────────────────────────────┘
-```
 
-### Página 2: Carrinho + Dados
-```
-┌─────────────────────────────────────────────────────────┐
-│  ← Voltar ao cardápio                                  │
-├─────────────────────────────────────────────────────────┤
-│  SEU PEDIDO                                            │
-│  ┌─────────────────────────────────────────────────┐   │
-│  │ 2x Salada de Bacalhau 500g      R$ 250,00  [-][+]│   │
-│  │ 1x Chester/Peru                  R$ 535,00  [-][+]│   │
-│  │ 1x Farofa Natalina 1kg          R$ 105,00  [-][+]│   │
-│  └─────────────────────────────────────────────────┘   │
-│                                                         │
-│  📅 Data de retirada: [24/12 ▼] ou [31/12 ▼]          │
-│                                                         │
-│  SEUS DADOS                                            │
-│  ┌─────────────────────────────────────────────────┐   │
-│  │ Nome completo: [________________]               │   │
-│  │ WhatsApp: [________________]                    │   │
-│  │ E-mail: [________________]                      │   │
-│  │ Observações: [________________]                 │   │
-│  └─────────────────────────────────────────────────┘   │
-│                                                         │
-│  RESUMO                                                │
-│  Subtotal:           R$ 890,00                        │
-│  Entrada (50%):      R$ 445,00                        │
-│                                                         │
-│  [FINALIZAR PEDIDO →]                                  │
-└─────────────────────────────────────────────────────────┘
-```
 
-### Página 3: Confirmação + PIX
-```
-┌─────────────────────────────────────────────────────────┐
-│  ✅ PEDIDO RECEBIDO!                                   │
-│  Pedido #NOZ-2025-0001                                 │
-├─────────────────────────────────────────────────────────┤
-│  RESUMO DO PEDIDO                                      │
-│  ─────────────────────────────────────────────────     │
-│  2x Salada de Bacalhau 500g ........... R$ 250,00     │
-│  1x Chester/Peru ...................... R$ 535,00     │
-│  1x Farofa Natalina 1kg ............... R$ 105,00     │
-│  ─────────────────────────────────────────────────     │
-│  TOTAL: R$ 890,00                                      │
-│  📅 Retirada: 24/12/2025                              │
-├─────────────────────────────────────────────────────────┤
-│  💰 PAGAMENTO DA ENTRADA (50%)                         │
-│                                                         │
-│  Valor: R$ 445,00                                      │
-│                                                         │
-│  ┌─────────────────────┐                               │
-│  │    [QR CODE PIX]    │                               │
-│  │                     │                               │
-│  └─────────────────────┘                               │
-│                                                         │
-│  PIX Copia e Cola:                                     │
-│  [00020126580014br.gov.bcb...]  [📋 Copiar]           │
-│                                                         │
-│  Dados bancários:                                      │
-│  Banco: XXX | Ag: XXXX | CC: XXXXX-X                  │
-│  CNPJ: XX.XXX.XXX/0001-XX                             │
-│  Noz Comida Afetiva LTDA                              │
-├─────────────────────────────────────────────────────────┤
-│  📱 PRÓXIMOS PASSOS                                    │
-│                                                         │
-│  1. Faça o PIX da entrada (R$ 445,00)                 │
-│  2. Envie o comprovante pelo WhatsApp                 │
-│  3. Aguarde a confirmação da equipe                   │
-│                                                         │
-│  [📲 Enviar comprovante via WhatsApp]                 │
-├─────────────────────────────────────────────────────────┤
-│  DÚVIDAS?                                              │
-│  📞 (27) XXXX-XXXX                                    │
-│  📍 Rua XXX, Vitória - ES                             │
-└─────────────────────────────────────────────────────────┘
-```
+## Arquitetura de Dados
 
----
-
-## 3. Cardápio Estruturado (Dados)
+### Cardápio (cardapio.js)
 
 ```javascript
 const cardapio = {
@@ -330,13 +199,11 @@ const cardapio = {
 };
 ```
 
----
 
-## 4. Integração com Homio
+## Integração com Homio/LeadConnector
 
-### Configuração no Homio
 
-#### 4.1. Criar Custom Fields no Contato
+### Custom Fields no Contato
 | Campo | Key | Tipo |
 |-------|-----|------|
 | Produtos do Pedido | `produtos_pedido` | Long Text |
@@ -347,26 +214,12 @@ const cardapio = {
 | Número do Pedido | `numero_pedido` | Text |
 | Observações | `observacoes_pedido` | Long Text |
 
-#### 4.2. Criar Workflow com Inbound Webhook
 
-```
-Trigger: Inbound Webhook
-    ↓
-Action: Create/Update Contact
-    - First Name: {{webhook.nome}}
-    - Phone: {{webhook.telefone}}
-    - Email: {{webhook.email}}
-    - Custom Fields: mapear todos
-    - Tags: ["ceia-2025", "aguardando-pix", "{{webhook.data_retirada}}"]
-    ↓
-Action: Send WhatsApp (Template ou Mensagem)
-    - "Olá {{contact.first_name}}! Recebemos seu pedido #{{webhook.numero_pedido}}..."
-    ↓
-Action: Internal Notification
-    - Notificar equipe de novo pedido
-```
+### Workflow com Inbound Webhook
 
-#### 4.3. Payload do Webhook (enviado pelo site)
+**Ver guia completo:** [docs/WEBHOOK-HOMIO.md](docs/WEBHOOK-HOMIO.md)
+
+### Payload do Webhook
 
 ```javascript
 // POST para: https://services.leadconnectorhq.com/hooks/WEBHOOK_ID
@@ -408,149 +261,122 @@ const payload = {
 };
 ```
 
----
 
-## 5. Fluxo de Automações no Homio
+## Fluxo de Automações
 
-### Workflow 1: Novo Pedido Recebido
-```
-[Inbound Webhook] 
-    → Criar/Atualizar Contato
-    → Adicionar Tag "ceia-2025" + "aguardando-pix"
-    → Enviar WhatsApp: "Pedido recebido! Aguardando PIX..."
-    → Notificar equipe (email/slack/interno)
-```
+**Ver guia completo:** [docs/WEBHOOK-HOMIO.md](docs/WEBHOOK-HOMIO.md)
 
-### Workflow 2: PIX Confirmado (manual)
-```
-[Tag Added: "pix-confirmado"]
-    → Remover Tag "aguardando-pix"
-    → Atualizar status_pedido para "Confirmado"
-    → Enviar WhatsApp: "Pagamento confirmado! Seu pedido está garantido..."
-```
+### Workflows Implementados
 
-### Workflow 3: Lembrete de Retirada
-```
-[Scheduled: 1 dia antes da data_retirada]
-    → Enviar WhatsApp: "Lembrete: amanhã é dia de buscar sua ceia!"
-```
+1. **Novo Pedido Recebido** - Cria contato, aplica tags, envia confirmação
+2. **PIX Confirmado** - Atualiza status, envia confirmação de pagamento
+3. **Lembretes Automáticos** - Retirada e pagamento pendente
 
-### Workflow 4: Lembrete de Pagamento (se não pagou)
-```
-[Wait: 24h após criação]
-    → IF Tag contains "aguardando-pix"
-    → Enviar WhatsApp: "Ainda não identificamos seu pagamento..."
-```
+## Sistema de Tracking
 
----
+**Ver documentação completa:** [docs/TRACKING.md](docs/TRACKING.md)
 
-## 6. Estrutura de Arquivos do Projeto
+### Eventos Rastreados
 
-```
-ceia-noz/
-├── index.html              # Página principal (Single Page App)
-├── css/
-│   └── styles.css          # Estilos customizados
-├── js/
-│   ├── app.js              # Lógica principal
-│   ├── cardapio.js         # Dados do cardápio
-│   ├── carrinho.js         # Lógica do carrinho
-│   └── checkout.js         # Envio para Homio
-├── images/
-│   ├── logo.png
-│   ├── hero.jpg
-│   └── produtos/           # Fotos dos pratos
-├── assets/
-│   └── qrcode-pix.png      # QR Code do PIX
-└── README.md
-```
+| Evento | Quando Dispara | Plataformas |
+|--------|----------------|-------------|
+| ViewContent | Ampliar imagem do produto | Meta, GA4, GTM |
+| AddToCart | Adicionar ao carrinho | Meta, GA4, GTM |
+| RemoveFromCart | Remover do carrinho | Meta, GA4, GTM |
+| InitiateCheckout | Abrir carrinho | Meta, GA4, GTM |
+| AddPaymentInfo | Preencher nome | Meta, GA4, GTM |
+| Purchase | Finalizar pedido | Meta, GA4, GTM |
+| PurchaseReal | Confirmar PIX (admin) | Meta, GA4, GTM |
 
----
+### Captura de UTMs
 
-## 7. Requisitos Técnicos
+**Ver documentação completa:** [docs/UTMS-SHEETS.md](docs/UTMS-SHEETS.md)
 
-### Performance
-- [ ] Lighthouse score > 90
-- [ ] Imagens otimizadas (WebP, lazy loading)
-- [ ] CSS/JS minificados
-- [ ] Cache adequado
+O sistema captura automaticamente parâmetros UTM da URL:
+- `utm_source` - Origem do tráfego
+- `utm_medium` - Tipo de mídia
+- `utm_campaign` - Nome da campanha
+- `utm_term` - Palavra-chave
+- `utm_content` - Variação do anúncio
 
-### Responsividade
-- [ ] Mobile-first design
-- [ ] Breakpoints: 320px, 768px, 1024px, 1440px
-- [ ] Touch-friendly (botões grandes, espaçamento adequado)
+## Painel Administrativo
 
-### Acessibilidade
-- [ ] Contraste adequado
-- [ ] Labels em todos os inputs
-- [ ] Navegação por teclado
-- [ ] Alt text nas imagens
+**Ver documentação completa:** [docs/ADMIN-PANEL.md](docs/ADMIN-PANEL.md)
 
-### SEO
-- [ ] Meta tags apropriadas
-- [ ] Open Graph para compartilhamento
-- [ ] Schema.org para restaurante/menu
+### Funcionalidades Principais
 
----
+- Listagem de pedidos em tempo real
+- Filtros por data e status de pagamento
+- Confirmação de PIX
+- Estatísticas dinâmicas
+- Integração direta com API do Homio
 
-## 8. Checklist de Implementação
-
-### Fase 1: Setup
-- [ ] Configurar Custom Fields no Homio
-- [ ] Criar Workflow com Inbound Webhook no Homio
-- [ ] Testar webhook com Postman/cURL
-- [ ] Obter imagens do site atual
-
-### Fase 2: Desenvolvimento
-- [ ] Criar estrutura HTML
-- [ ] Implementar estilos CSS
-- [ ] Desenvolver lógica do carrinho
-- [ ] Integrar com webhook do Homio
-- [ ] Criar página de confirmação com PIX
-
-### Fase 3: Testes
-- [ ] Testar fluxo completo
-- [ ] Testar em diferentes dispositivos
-- [ ] Validar envio para Homio
-- [ ] Testar automações de WhatsApp
-
-### Fase 4: Deploy
-- [ ] Subir para hospedagem
-- [ ] Configurar domínio
-- [ ] Configurar SSL
-- [ ] Monitoramento de erros
-
----
-
-## 9. Dados do PIX
+### Configuração da API
 
 ```javascript
-const dadosPix = {
-  chavePix: "33.339.742/0001-03", // CNPJ
-  razaoSocial: "Noz Comida Afetiva",
-  // QR Code é gerado dinamicamente com o valor da entrada
-};
-
-const contatoRestaurante = {
-  whatsapp: "5527997016929",
-  telefone: "(27) 99701-6929",
-  endereco: "Rua Amélia Tartuce Nasser, 865, Loja 10 - Jardim da Penha, Vitória/ES",
-  instagram: "@nozcomidaafetiva"
+const API_CONFIG = {
+    baseUrl: 'https://services.leadconnectorhq.com',
+    token: 'pit-eb3d06dd-5ec1-4a10-9aba-76b6b8490f1a',
+    locationId: 'iuYB2N2aOtvi7dlzJ1sQ',
+    version: '2021-07-28'
 };
 ```
 
+## Performance e Otimização
+
+### Imagens
+- **Formato:** WebP
+- **Redução:** 94% (de ~100MB para ~6MB)
+- **Otimizadas:** 16 produtos + 3 backgrounds
+
+### Cache e Versionamento
+- Cache busting com versioning: `?v=20251205`
+- Scripts versionados para garantir atualização
+- CDN global via Vercel
+
+### Responsividade
+- Mobile-first design
+- Breakpoints: 768px, 1024px, 1440px
+- Grid adaptativo (1-4 colunas)
+- Touch-friendly (botões grandes, espaçamento adequado)
+
+## Segurança
+
+⚠️ **Considerações Importantes:**
+
+1. **Tokens expostos:** API tokens estão no código fonte (client-side)
+   - **Recomendação:** Mover para backend/proxy em produção
+2. **Senha hardcoded:** Senha do admin está no código
+   - **Recomendação:** Implementar autenticação server-side
+3. **HTTPS Only:** Sempre usar HTTPS em produção
+4. **Rate Limiting:** Considerar limitação de requisições à API
+
+## Monitoramento
+
+### Ferramentas Utilizadas
+- **Meta Events Manager:** Tracking de conversões Facebook/Instagram
+- **Google Analytics 4:** Análise de comportamento e funil
+- **Google Tag Manager:** Gestão centralizada de tags
+- **Vercel Analytics:** Performance e uptime
+
+### Métricas Principais
+- Taxa de conversão do funil
+- Origem de tráfego (UTMs)
+- Valor médio do pedido
+- Taxa de confirmação de PIX
+- Performance (Core Web Vitals)
+
+## Documentação Adicional
+
+| Documento | Link |
+|-----------|------|
+| **Guia do Admin** | [docs/ADMIN-PANEL.md](docs/ADMIN-PANEL.md) |
+| **Sistema de Tracking** | [docs/TRACKING.md](docs/TRACKING.md) |
+| **UTMs e Google Sheets** | [docs/UTMS-SHEETS.md](docs/UTMS-SHEETS.md) |
+| **Webhook Homio** | [docs/WEBHOOK-HOMIO.md](docs/WEBHOOK-HOMIO.md) |
+| **README Principal** | [README.md](README.md) |
+
 ---
 
-## Próximos Passos
-
-1. ✅ **Dados do PIX e contato** - Configurados
-2. **Me envia as imagens** do site atual (logo, hero, fotos dos pratos)
-3. **Configura o Homio** (Custom Fields + Workflow com Inbound Webhook)
-4. **Copia a URL do Webhook** e substitui no código do site
-5. **Testamos a integração** juntos
-6. **Deploy** no domínio final
-
----
-
-*Documento criado em: Dezembro 2025*
-*Versão: 1.0*
+**Última atualização:** 05/12/2025  
+**Versão:** 2.0

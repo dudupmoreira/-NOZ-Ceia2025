@@ -30,15 +30,20 @@ CeiaNoz/
 │   └── styles.css          # Estilos do projeto
 ├── js/
 │   ├── app.js              # Lógica principal e carrinho
-│   └── cardapio.js         # Dados do cardápio (produtos)
+│   ├── cardapio.js         # Dados do cardápio (produtos)
+│   └── tracking.js         # Sistema de rastreamento de eventos
 ├── imagens/                # Imagens otimizadas (WebP)
 │   ├── *.webp              # Produtos e backgrounds
 │   ├── logo-*.webp         # Logos do restaurante
 │   └── favicon.png
+├── docs/                   # 📚 Documentação
+│   ├── ADMIN-PANEL.md      # Guia do painel administrativo
+│   ├── TRACKING.md         # Rastreamento de eventos (Meta/GA4/GTM)
+│   ├── UTMS-SHEETS.md      # UTMs e integração com Google Sheets
+│   └── WEBHOOK-HOMIO.md    # Configuração do webhook Homio
 ├── .gitignore              # Arquivos ignorados pelo Git
 ├── .vercelignore           # Arquivos ignorados pelo Vercel
 ├── ARQUITETURA.md          # Documentação técnica detalhada
-├── GUIA-WEBHOOK-HOMIO.md   # Guia de configuração do webhook
 └── README.md               # Este arquivo
 ```
 
@@ -58,19 +63,31 @@ CeiaNoz/
 ### Painel Admin (admin.html)
 - ✅ Listagem de pedidos em cards compactos
 - ✅ Grid responsivo (3-4 cards por linha)
-- ✅ Filtros por data, status e busca
+- ✅ **Filtros por data de retirada** (24/12, 31/12, Todos)
+- ✅ **Filtros por status de pagamento** (Todos, Pagos, Aguardando) 🆕
+- ✅ Filtros combinados (data + status)
 - ✅ Badge "PIX Confirmado" para pedidos pagos
 - ✅ Botão para confirmar PIX (adiciona tag no Homio)
+- ✅ Exibição de pedidos pagos e aguardando pagamento
+- ✅ Estatísticas dinâmicas por filtro
 - ✅ Botão manual de atualização
 - ✅ Correção de fuso horário (UTC-3)
 - ✅ Tema claro e UX otimizada
 - ✅ Exibição correta de custom fields da API
+
+### Sistema de Rastreamento
+- ✅ Tracking de eventos (Meta Pixel, GA4, GTM)
+- ✅ Captura de UTMs de origem de tráfego
+- ✅ Evento Purchase ao finalizar pedido
+- ✅ Evento PurchaseReal ao confirmar PIX no admin
+- ✅ Integração com Google Sheets (opcional)
 
 ## 🔧 Tecnologias
 
 - **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
 - **Estilização:** CSS Grid, Flexbox, CSS Variables
 - **Integração:** LeadConnector/Homio API
+- **Tracking:** Meta Pixel, Google Analytics 4, Google Tag Manager
 - **Hospedagem:** Vercel
 - **Imagens:** WebP (otimizado)
 - **Versionamento:** Git + GitHub
@@ -165,6 +182,18 @@ php -S localhost:8000
 
 3. Acesse: http://localhost:8000
 
+## 📚 Documentação
+
+### Guias Disponíveis
+
+| Documento | Descrição |
+|-----------|-----------|
+| [**ADMIN-PANEL.md**](docs/ADMIN-PANEL.md) | Guia completo do painel administrativo |
+| [**TRACKING.md**](docs/TRACKING.md) | Sistema de rastreamento de eventos |
+| [**UTMS-SHEETS.md**](docs/UTMS-SHEETS.md) | Captura de UTMs e Google Sheets |
+| [**WEBHOOK-HOMIO.md**](docs/WEBHOOK-HOMIO.md) | Configuração do webhook |
+| [**ARQUITETURA.md**](ARQUITETURA.md) | Arquitetura técnica do sistema |
+
 ## 📝 Configuração Inicial
 
 ### 1. Configurar Custom Fields no Homio
@@ -180,41 +209,47 @@ Criar os seguintes custom fields em Settings > Custom Fields:
 | Data Retirada | data_retirada | Date |
 | Status do Pedido | status_pedido | Text |
 | Observações | observacoes | Long Text |
+| UTM Source | utm_source | Text |
+| UTM Medium | utm_medium | Text |
+| UTM Campaign | utm_campaign | Text |
 
 ### 2. Configurar Webhook
 
-Siga o guia completo em: [GUIA-WEBHOOK-HOMIO.md](GUIA-WEBHOOK-HOMIO.md)
+Siga o guia completo em: [docs/WEBHOOK-HOMIO.md](docs/WEBHOOK-HOMIO.md)
 
 ### 3. Atualizar Credenciais
 
-Edite `admin.html` e `index.html` com suas credenciais da API.
+Edite `admin.html` com suas credenciais da API do Homio.
 
 ## 🔄 Fluxo de Pedidos
 
 ```
-Cliente acessa site
+1. Cliente acessa site
+   (UTMs capturadas automaticamente)
     ↓
-Seleciona produtos e adiciona ao carrinho
+2. Seleciona produtos e adiciona ao carrinho
+   (Evento: AddToCart disparado)
     ↓
-Preenche dados (nome, telefone, email)
+3. Preenche dados (nome, telefone, email)
+   (Evento: AddPaymentInfo disparado)
     ↓
-Finaliza pedido
+4. Finaliza pedido
+   (Evento: Purchase disparado)
     ↓
-Webhook envia dados para Homio
+5. Webhook envia dados para Homio
+   (Contato criado/atualizado com custom fields + UTMs)
     ↓
-Contato criado/atualizado com custom fields
+6. Tags aplicadas: "ceia-2025", "aguardando-pagamento"
     ↓
-Tags aplicadas: "ceia-2025", "aguardando-pix"
+7. Cliente recebe dados do PIX
     ↓
-Cliente recebe dados do PIX
+8. Cliente faz pagamento e envia comprovante
     ↓
-Cliente faz pagamento
+9. Admin confirma PIX no painel
+   (Tag "pix-confirmado" adicionada)
+   (Evento: PurchaseReal disparado)
     ↓
-Admin confirma PIX no painel
-    ↓
-Tag "pix-confirmado" adicionada no Homio
-    ↓
-Automação envia confirmação via WhatsApp
+10. Automação envia confirmação via WhatsApp
 ```
 
 ## 📞 Contato
@@ -230,12 +265,22 @@ Projeto proprietário - Restaurante Noz Comida Afetiva © 2025
 
 ## 🎯 Roadmap Futuro
 
+### Curto Prazo
+- [ ] Busca por nome/telefone no admin
+- [ ] Exportar relatórios em CSV
+- [ ] Notificações em tempo real
+
+### Médio Prazo
 - [ ] Integração com gateway de pagamento (PIX automático)
-- [ ] Relatórios e dashboards de vendas
+- [ ] Dashboard de analytics com gráficos
 - [ ] Sistema de cupons de desconto
-- [ ] Notificações push para clientes
+
+### Longo Prazo
 - [ ] App mobile (PWA)
+- [ ] Sistema de rotas de entrega
+- [ ] Programa de fidelidade
 
 ---
 
-**Última atualização:** Dezembro 2025
+**Última atualização:** 05/12/2025  
+**Versão:** 2.0
