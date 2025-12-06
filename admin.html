@@ -605,6 +605,11 @@
                         <button class="filter-btn" onclick="filterPedidos('24/12')" data-filter="24/12">24/12</button>
                         <button class="filter-btn" onclick="filterPedidos('31/12')" data-filter="31/12">31/12</button>
                     </div>
+                    <div class="filter-group">
+                        <button class="filter-btn active" onclick="filterByPaymentStatus('todos')" data-payment-filter="todos">Todos</button>
+                        <button class="filter-btn" onclick="filterByPaymentStatus('pagos')" data-payment-filter="pagos">Pagos</button>
+                        <button class="filter-btn" onclick="filterByPaymentStatus('aguardando')" data-payment-filter="aguardando">Aguardando</button>
+                    </div>
                     <button class="btn btn-refresh" onclick="loadPedidos()">🔄 Atualizar</button>
                     <button class="btn btn-logout" onclick="logout()">Sair</button>
                 </div>
@@ -657,6 +662,7 @@
 
         let allPedidos = [];
         let currentFilter = 'todos';
+        let currentPaymentFilter = 'todos';
 
         // Login
         function login() {
@@ -710,9 +716,12 @@
 
                 const data = await response.json();
                 
-                // Filtrar contatos com tag 'aguardando-pagamento'
+                // Filtrar contatos com tag 'aguardando-pagamento' ou 'pix-confirmado'
                 allPedidos = (data.contacts || []).filter(contact => 
-                    contact.tags && contact.tags.includes('aguardando-pagamento')
+                    contact.tags && (
+                        contact.tags.includes('aguardando-pagamento') || 
+                        contact.tags.includes('pix-confirmado')
+                    )
                 );
 
                 displayPedidos();
@@ -738,21 +747,45 @@
             
             let pedidosFiltrados = allPedidos;
             
+            // Aplicar filtro de data
             if (currentFilter !== 'todos') {
-                pedidosFiltrados = allPedidos.filter(pedido => {
+                pedidosFiltrados = pedidosFiltrados.filter(pedido => {
                     const dataRetirada = getCustomField(pedido, 'data_retirada') || '';
-                    // Formatar a data antes de comparar
                     const dataFormatada = formatarData(dataRetirada);
                     return dataFormatada.includes(currentFilter);
                 });
             }
+            
+            // Aplicar filtro de status de pagamento
+            if (currentPaymentFilter !== 'todos') {
+                pedidosFiltrados = pedidosFiltrados.filter(pedido => {
+                    const tags = pedido.tags || [];
+                    if (currentPaymentFilter === 'pagos') {
+                        return tags.includes('pix-confirmado');
+                    } else if (currentPaymentFilter === 'aguardando') {
+                        return tags.includes('aguardando-pagamento');
+                    }
+                    return true;
+                });
+            }
 
             if (pedidosFiltrados.length === 0) {
+                let mensagem = 'Nenhum pedido encontrado';
+                let descricao = 'Tente ajustar os filtros para visualizar outros pedidos.';
+                
+                if (currentPaymentFilter === 'pagos') {
+                    mensagem = 'Nenhum pedido pago';
+                    descricao = 'Não há pedidos com PIX confirmado nesta seleção.';
+                } else if (currentPaymentFilter === 'aguardando') {
+                    mensagem = 'Nenhum pedido aguardando';
+                    descricao = 'Não há pedidos aguardando confirmação de pagamento.';
+                }
+                
                 container.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-state-icon">📦</div>
-                        <h3>Nenhum pedido aguardando confirmação</h3>
-                        <p>Todos os pedidos foram confirmados ou não há pedidos pendentes.</p>
+                        <h3>${mensagem}</h3>
+                        <p>${descricao}</p>
                     </div>
                 `;
                 return;
@@ -910,13 +943,28 @@
             }
         }
 
-        // Filtrar pedidos
+        // Filtrar pedidos por data
         function filterPedidos(filter) {
             currentFilter = filter;
             
-            document.querySelectorAll('.filter-btn').forEach(btn => {
+            document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
                 btn.classList.remove('active');
                 if (btn.dataset.filter === filter) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            displayPedidos();
+            updateStats();
+        }
+
+        // Filtrar pedidos por status de pagamento
+        function filterByPaymentStatus(filter) {
+            currentPaymentFilter = filter;
+            
+            document.querySelectorAll('.filter-btn[data-payment-filter]').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.paymentFilter === filter) {
                     btn.classList.add('active');
                 }
             });
@@ -929,12 +977,25 @@
         function updateStats() {
             let pedidosFiltrados = allPedidos;
             
+            // Aplicar filtro de data
             if (currentFilter !== 'todos') {
-                pedidosFiltrados = allPedidos.filter(pedido => {
+                pedidosFiltrados = pedidosFiltrados.filter(pedido => {
                     const dataRetirada = getCustomField(pedido, 'data_retirada') || '';
-                    // Formatar a data antes de comparar
                     const dataFormatada = formatarData(dataRetirada);
                     return dataFormatada.includes(currentFilter);
+                });
+            }
+            
+            // Aplicar filtro de status de pagamento
+            if (currentPaymentFilter !== 'todos') {
+                pedidosFiltrados = pedidosFiltrados.filter(pedido => {
+                    const tags = pedido.tags || [];
+                    if (currentPaymentFilter === 'pagos') {
+                        return tags.includes('pix-confirmado');
+                    } else if (currentPaymentFilter === 'aguardando') {
+                        return tags.includes('aguardando-pagamento');
+                    }
+                    return true;
                 });
             }
 
