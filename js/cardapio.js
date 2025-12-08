@@ -56,8 +56,17 @@ const cardapio = {
   ],
   proteinas: [
     {
-      id: "chester-peru",
-      nome: "Chester ou Peru Assado",
+      id: "chester-assado",
+      nome: "Chester Assado",
+      descricao: "Acompanha batata bolinha e farofa natalina. Aproximadamente 4,5kg o prato completo",
+      imagem: "imagens/Chester ou Peru assado.webp",
+      opcoes: [
+        { peso: "~4,5kg", preco: 535 }
+      ]
+    },
+    {
+      id: "peru-assado",
+      nome: "Peru Assado",
       descricao: "Acompanha batata bolinha e farofa natalina. Aproximadamente 4,5kg o prato completo",
       imagem: "imagens/Chester ou Peru assado.webp",
       opcoes: [
