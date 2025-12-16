@@ -891,7 +891,7 @@
                     throw new Error('Contato não encontrado na oportunidade');
                 }
                 
-                // 1. Atualizar estágio da oportunidade para "Pago"
+                // 1. Atualizar estágio da oportunidade para "Pago" e campo "status_pedido" para "PIX Confirmado"
                 const updateOppResponse = await fetch(
                     `${API_CONFIG.baseUrl}/opportunities/${opportunityId}`,
                     {
@@ -903,7 +903,13 @@
                             'Accept': 'application/json'
                         },
                         body: JSON.stringify({ 
-                            pipelineStageId: PIPELINE_STAGES.pago 
+                            pipelineStageId: PIPELINE_STAGES.pago,
+                            customFields: [
+                                {
+                                    id: OPPORTUNITY_FIELD_MAP.status_pedido,
+                                    field_value: ["PIX Confirmado"]
+                                }
+                            ]
                         })
                     }
                 );
