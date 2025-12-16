@@ -642,22 +642,32 @@
         // Configuração da API
         const API_CONFIG = {
             baseUrl: 'https://services.leadconnectorhq.com',
-            token: 'pit-eb3d06dd-5ec1-4a10-9aba-76b6b8490f1a',
+            token: 'pit-81ab916f-2bcf-4381-9157-f381c0a9dc25',
             locationId: 'iuYB2N2aOtvi7dlzJ1sQ',
-            version: '2021-07-28'
+            version: '2021-07-28',
+            pipelineId: 'pwmwfFN1OoHoRpu70uY2'
         };
 
         const ADMIN_PASSWORD = 'noz2025';
 
-        // Mapeamento de nomes de campos personalizados para IDs da API
-        const CUSTOM_FIELD_MAP = {
-            'produtos_pedido': 'If8oqvhkoAYNtGwiecIO',
-            'valor_entrada': '6qDwjoJADxN2x5F3zSCg',
-            'status_pedido': 'pmxAislCxjvEFYYTup4f',
-            'valor_total': 'JMNWXPU15qENbgGhx9SN',
-            'numero_pedido': '3IOhOp251a4Y5RW9CsDL',
-            'observacoes_pedido': 'hh51SkBndd383fcBr998',
-            'data_retirada': 'myBIwy68LfiKwJwFXRKl'
+        // Mapeamento de campos personalizados das OPORTUNIDADES
+        const OPPORTUNITY_FIELD_MAP = {
+            'valor_entrada': '2SV51sUefbrpE6j54idA',
+            'data_retirada': '8onjX8uBLwCOGns5rt2Y',
+            'numero_pedido': 'JZ4QzbdK3QSFQUT8b6OY',
+            'produtos': 'KjW6kvcr3bfEhHeMOGFt',
+            'observacoes': 'VAhkeO8SWwSiSqJG88is',
+            'valor_total': 'VpeiHn8nXzv4QWiCf9pl',
+            'status_pedido': 'tQP5XogWJYh0MbKAYjOm'
+        };
+
+        // IDs dos estágios do pipeline "Pedidos Ceia"
+        const PIPELINE_STAGES = {
+            'aguardando': 'a6b0ad85-0fc1-4f8c-abb8-8942e402e685',
+            'pago': 'f03fdf22-edd1-4c47-bdf7-56a3b51e5b62',
+            'pronto': '61a9a4f3-d168-4c92-bd85-1d7d4876ec29',
+            'entregue': '69ad13db-bc91-43af-b576-a5003e309520',
+            'cancelado': '10fa68b8-7b55-4059-8a02-65e8cdce2ecc'
         };
 
         let allPedidos = [];
@@ -693,14 +703,14 @@
             document.getElementById('password').value = '';
         }
 
-        // Carregar pedidos da API
+        // Carregar pedidos da API (agora buscando OPORTUNIDADES)
         async function loadPedidos() {
             const container = document.getElementById('pedidosContainer');
             container.innerHTML = '<div class="loading">Carregando pedidos...</div>';
 
             try {
                 const response = await fetch(
-                    `${API_CONFIG.baseUrl}/contacts/?locationId=${API_CONFIG.locationId}&limit=100`,
+                    `${API_CONFIG.baseUrl}/opportunities/search?location_id=${API_CONFIG.locationId}&limit=100`,
                     {
                         headers: {
                             'Authorization': `Bearer ${API_CONFIG.token}`,
@@ -716,14 +726,12 @@
 
                 const data = await response.json();
                 
-                // Filtrar contatos com tag 'aguardando-pagamento' ou 'pix-confirmado'
-                allPedidos = (data.contacts || []).filter(contact => 
-                    contact.tags && (
-                        contact.tags.includes('aguardando-pagamento') || 
-                        contact.tags.includes('pix-confirmado')
-                    )
+                // Filtrar apenas oportunidades do pipeline "Pedidos Ceia"
+                allPedidos = (data.opportunities || []).filter(opp => 
+                    opp.pipelineId === API_CONFIG.pipelineId
                 );
 
+                console.log(`✅ ${allPedidos.length} pedidos carregados`);
                 displayPedidos();
                 updateStats();
             } catch (error) {
@@ -756,14 +764,13 @@
                 });
             }
             
-            // Aplicar filtro de status de pagamento
+            // Aplicar filtro de status de pagamento baseado no estágio do pipeline
             if (currentPaymentFilter !== 'todos') {
                 pedidosFiltrados = pedidosFiltrados.filter(pedido => {
-                    const tags = pedido.tags || [];
                     if (currentPaymentFilter === 'pagos') {
-                        return tags.includes('pix-confirmado');
+                        return pedido.pipelineStageId === PIPELINE_STAGES.pago;
                     } else if (currentPaymentFilter === 'aguardando') {
-                        return tags.includes('aguardando-pagamento');
+                        return pedido.pipelineStageId === PIPELINE_STAGES.aguardando;
                     }
                     return true;
                 });
@@ -798,16 +805,18 @@
         function createPedidoCard(pedido) {
             const numeroPedido = getCustomField(pedido, 'numero_pedido') || 'N/A';
             const dataRetirada = getCustomField(pedido, 'data_retirada') || 'N/A';
-            const produtos = getCustomField(pedido, 'produtos_pedido') || 'Nenhum produto';
+            const produtos = getCustomField(pedido, 'produtos') || 'Nenhum produto';
             const valorTotal = getCustomField(pedido, 'valor_total') || 0;
             const valorEntrada = getCustomField(pedido, 'valor_entrada') || 0;
-            const observacoes = getCustomField(pedido, 'observacoes_pedido') || '';
+            const observacoes = getCustomField(pedido, 'observacoes') || '';
             
-            const telefone = pedido.phone || '';
+            // Dados do contato (nested em opportunities)
+            const contact = pedido.contact || {};
+            const telefone = contact.phone || '';
             const whatsappLink = telefone ? `https://wa.me/${telefone.replace(/\D/g, '')}` : '#';
             
-            // Verificar se o PIX já foi confirmado
-            const pixConfirmado = pedido.tags && pedido.tags.includes('pix-confirmado');
+            // Verificar se o PIX já foi confirmado (estágio "pago")
+            const pixConfirmado = pedido.pipelineStageId === PIPELINE_STAGES.pago;
             
             const produtosList = produtos.split('\n')
                 .filter(p => p.trim())
@@ -827,15 +836,15 @@
                     <div class="pedido-info">
                         <div class="info-row">
                             <span class="info-icon">👤</span>
-                            <span class="info-value">${pedido.name || pedido.firstName || 'N/A'}</span>
+                            <span class="info-value">${contact.name || contact.firstName || 'N/A'}</span>
                         </div>
                         <div class="info-row">
                             <span class="info-icon">📱</span>
-                            <span class="info-value">${pedido.phone || 'N/A'}</span>
+                            <span class="info-value">${contact.phone || 'N/A'}</span>
                         </div>
                         <div class="info-row">
                             <span class="info-icon">📧</span>
-                            <span class="info-value">${pedido.email || 'N/A'}</span>
+                            <span class="info-value">${contact.email || 'N/A'}</span>
                         </div>
                     </div>
                     
@@ -869,37 +878,19 @@
             `;
         }
 
-        // Confirmar PIX
-        async function confirmarPix(contactId, numeroPedido) {
+        // Confirmar PIX - Move oportunidade para estágio "Pago"
+        async function confirmarPix(opportunityId, numeroPedido) {
             if (!confirm(`Confirmar o PIX do pedido #${numeroPedido}?`)) {
                 return;
             }
 
             try {
-                const getResponse = await fetch(
-                    `${API_CONFIG.baseUrl}/contacts/${contactId}`,
-                    {
-                        headers: {
-                            'Authorization': `Bearer ${API_CONFIG.token}`,
-                            'Version': API_CONFIG.version,
-                            'Accept': 'application/json'
-                        }
-                    }
-                );
-
-                if (!getResponse.ok) {
-                    throw new Error('Erro ao buscar contato');
-                }
-
-                const contact = await getResponse.json();
-                const currentTags = contact.contact?.tags || [];
+                // Buscar a oportunidade atual para pegar dados do contato para tracking
+                const opportunity = allPedidos.find(p => p.id === opportunityId);
                 
-                const newTags = currentTags
-                    .filter(tag => tag !== 'aguardando-pagamento')
-                    .concat('pix-confirmado');
-
+                // Atualizar estágio da oportunidade para "Pago"
                 const updateResponse = await fetch(
-                    `${API_CONFIG.baseUrl}/contacts/${contactId}`,
+                    `${API_CONFIG.baseUrl}/opportunities/${opportunityId}`,
                     {
                         method: 'PUT',
                         headers: {
@@ -908,30 +899,34 @@
                             'Content-Type': 'application/json',
                             'Accept': 'application/json'
                         },
-                        body: JSON.stringify({ tags: newTags })
+                        body: JSON.stringify({ 
+                            pipelineStageId: PIPELINE_STAGES.pago 
+                        })
                     }
                 );
 
                 if (!updateResponse.ok) {
-                    throw new Error('Erro ao atualizar contato');
+                    throw new Error('Erro ao atualizar estágio da oportunidade');
                 }
 
                 // 💰 Tracking: PurchaseReal - PIX Confirmado
-                const contactData = contact.contact || contact;
-                const valorTotal = parseFloat(getCustomField(contactData, 'valor_total')) || 0;
-                const valorEntrada = parseFloat(getCustomField(contactData, 'valor_entrada')) || 0;
-                const dataRetirada = getCustomField(contactData, 'data_retirada') || '';
-                
-                if (typeof trackPurchaseReal === 'function') {
-                    trackPurchaseReal({
-                        transactionId: numeroPedido,
-                        valorTotal: valorTotal,
-                        valorEntrada: valorEntrada,
-                        customerName: contactData.name || contactData.firstName || '',
-                        customerPhone: contactData.phone || '',
-                        customerEmail: contactData.email || '',
-                        dataRetirada: formatarData(dataRetirada)
-                    });
+                if (opportunity) {
+                    const contact = opportunity.contact || {};
+                    const valorTotal = parseFloat(getCustomField(opportunity, 'valor_total')) || 0;
+                    const valorEntrada = parseFloat(getCustomField(opportunity, 'valor_entrada')) || 0;
+                    const dataRetirada = getCustomField(opportunity, 'data_retirada') || '';
+                    
+                    if (typeof trackPurchaseReal === 'function') {
+                        trackPurchaseReal({
+                            transactionId: numeroPedido,
+                            valorTotal: valorTotal,
+                            valorEntrada: valorEntrada,
+                            customerName: contact.name || contact.firstName || '',
+                            customerPhone: contact.phone || '',
+                            customerEmail: contact.email || '',
+                            dataRetirada: formatarData(dataRetirada)
+                        });
+                    }
                 }
 
                 alert(`✅ PIX confirmado para o pedido #${numeroPedido}!`);
@@ -986,14 +981,13 @@
                 });
             }
             
-            // Aplicar filtro de status de pagamento
+            // Aplicar filtro de status de pagamento baseado no estágio do pipeline
             if (currentPaymentFilter !== 'todos') {
                 pedidosFiltrados = pedidosFiltrados.filter(pedido => {
-                    const tags = pedido.tags || [];
                     if (currentPaymentFilter === 'pagos') {
-                        return tags.includes('pix-confirmado');
+                        return pedido.pipelineStageId === PIPELINE_STAGES.pago;
                     } else if (currentPaymentFilter === 'aguardando') {
-                        return tags.includes('aguardando-pagamento');
+                        return pedido.pipelineStageId === PIPELINE_STAGES.aguardando;
                     }
                     return true;
                 });
@@ -1013,26 +1007,19 @@
         }
 
         // Funções auxiliares
-        function getCustomField(contact, fieldKey) {
-            // Verificar se existe mapeamento de ID para este campo
-            const mappedId = CUSTOM_FIELD_MAP[fieldKey];
+        function getCustomField(opportunity, fieldKey) {
+            // Usar mapeamento de oportunidades
+            const mappedId = OPPORTUNITY_FIELD_MAP[fieldKey];
             
-            // Tentar buscar diretamente no objeto contact
-            if (contact[fieldKey] !== undefined && contact[fieldKey] !== null) {
-                return contact[fieldKey];
-            }
-            
-            // Tentar no array customFields usando o ID mapeado ou o fieldKey original
-            if (contact.customFields && Array.isArray(contact.customFields)) {
-                const field = contact.customFields.find(f => 
-                    f.id === mappedId ||  // Usar o ID mapeado primeiro
-                    f.id === fieldKey || 
-                    f.key === fieldKey || 
-                    f.fieldKey === fieldKey ||
-                    f.name === fieldKey
-                );
-                if (field && field.value !== undefined) {
-                    return field.value;
+            // Buscar no array customFields da oportunidade
+            if (opportunity.customFields && Array.isArray(opportunity.customFields)) {
+                const field = opportunity.customFields.find(f => f.id === mappedId);
+                if (field) {
+                    // Retornar o valor correto baseado no tipo
+                    if (field.type === 'number') return field.fieldValueNumber;
+                    if (field.type === 'string') return field.fieldValueString;
+                    if (field.type === 'date') return field.fieldValueDate;
+                    if (field.type === 'array') return field.fieldValueArray ? field.fieldValueArray.join(', ') : '';
                 }
             }
             
