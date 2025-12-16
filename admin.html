@@ -639,12 +639,10 @@
     </div>
 
     <script>
-        // Configuração da API
+        // Configuração da API - Agora usa API routes serverless (token protegido)
         const API_CONFIG = {
-            baseUrl: 'https://services.leadconnectorhq.com',
-            token: 'pit-81ab916f-2bcf-4381-9157-f381c0a9dc25',
+            baseUrl: '/api',  // API routes serverless do Vercel
             locationId: 'iuYB2N2aOtvi7dlzJ1sQ',
-            version: '2021-07-28',
             pipelineId: 'pwmwfFN1OoHoRpu70uY2'
         };
 
@@ -710,14 +708,7 @@
 
             try {
                 const response = await fetch(
-                    `${API_CONFIG.baseUrl}/opportunities/search?location_id=${API_CONFIG.locationId}&limit=100`,
-                    {
-                        headers: {
-                            'Authorization': `Bearer ${API_CONFIG.token}`,
-                            'Version': API_CONFIG.version,
-                            'Accept': 'application/json'
-                        }
-                    }
+                    `${API_CONFIG.baseUrl}/opportunities/search?location_id=${API_CONFIG.locationId}&limit=100`
                 );
 
                 if (!response.ok) {
@@ -897,10 +888,7 @@
                     {
                         method: 'PUT',
                         headers: {
-                            'Authorization': `Bearer ${API_CONFIG.token}`,
-                            'Version': API_CONFIG.version,
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
+                            'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({ 
                             pipelineStageId: PIPELINE_STAGES.pago,
@@ -920,14 +908,7 @@
 
                 // 2. Buscar tags atuais do contato
                 const getContactResponse = await fetch(
-                    `${API_CONFIG.baseUrl}/contacts/${opportunity.contactId}`,
-                    {
-                        headers: {
-                            'Authorization': `Bearer ${API_CONFIG.token}`,
-                            'Version': API_CONFIG.version,
-                            'Accept': 'application/json'
-                        }
-                    }
+                    `${API_CONFIG.baseUrl}/contacts/${opportunity.contactId}`
                 );
 
                 if (!getContactResponse.ok) {
@@ -946,10 +927,7 @@
                         {
                             method: 'PUT',
                             headers: {
-                                'Authorization': `Bearer ${API_CONFIG.token}`,
-                                'Version': API_CONFIG.version,
-                                'Content-Type': 'application/json',
-                                'Accept': 'application/json'
+                                'Content-Type': 'application/json'
                             },
                             body: JSON.stringify({ tags: newTags })
                         }
