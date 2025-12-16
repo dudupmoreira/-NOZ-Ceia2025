@@ -60,15 +60,18 @@ CeiaNoz/
 - ✅ Botão de compartilhamento via WhatsApp
 - ✅ URL compartilhável para restaurar pedido (?pedido=)
 
-### Painel Admin (admin.html)
+### Painel Admin (admin.html) 🆕
+- ✅ **Migrado para API de Oportunidades** (suporta múltiplos pedidos por cliente)
+- ✅ **Arquitetura Serverless Segura** (API routes protegem token)
 - ✅ Listagem de pedidos em cards compactos
 - ✅ Grid responsivo (3-4 cards por linha)
 - ✅ **Filtros por data de retirada** (24/12, 31/12, Todos)
-- ✅ **Filtros por status de pagamento** (Todos, Pagos, Aguardando) 🆕
+- ✅ **Filtros por status de pagamento** (Todos, Pagos, Aguardando)
+- ✅ **Filtros por estágio do pipeline** (aguardando/pago/pronto/entregue)
 - ✅ Filtros combinados (data + status)
 - ✅ Badge "PIX Confirmado" para pedidos pagos
-- ✅ Botão para confirmar PIX (adiciona tag no Homio)
-- ✅ Exibição de pedidos pagos e aguardando pagamento
+- ✅ **Confirmação de PIX** (move estágio + atualiza campo + adiciona tag)
+- ✅ **Exibição apenas de pedidos ativos** (status "open")
 - ✅ Estatísticas dinâmicas por filtro
 - ✅ Botão manual de atualização
 - ✅ Correção de fuso horário (UTC-3)
@@ -85,10 +88,12 @@ CeiaNoz/
 ## 🔧 Tecnologias
 
 - **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
+- **Backend:** Vercel Serverless Functions (API Routes)
 - **Estilização:** CSS Grid, Flexbox, CSS Variables
-- **Integração:** LeadConnector/Homio API
+- **Integração:** LeadConnector/Homio API (Opportunities + Contacts)
 - **Tracking:** Meta Pixel, Google Analytics 4, Google Tag Manager
 - **Hospedagem:** Vercel
+- **Segurança:** Environment Variables, API Proxy
 - **Imagens:** WebP (otimizado)
 - **Versionamento:** Git + GitHub
 
@@ -106,27 +111,41 @@ CeiaNoz/
 
 ## 🔐 Variáveis de Ambiente
 
-### LeadConnector/Homio API
+### Vercel Environment Variables
 
-Configurar no código `admin.html`:
+Configurar no dashboard do Vercel (Settings → Environment Variables):
 
-```javascript
-const API_URL = 'https://services.leadconnectorhq.com/contacts/';
-const API_KEY = 'SEU_API_KEY_AQUI';
-const LOCATION_ID = 'SEU_LOCATION_ID';
-const WEBHOOK_URL = 'https://services.leadconnectorhq.com/hooks/SEU_WEBHOOK_ID';
+```
+HIGHLEVEL_API_TOKEN=pit-xxxxx-xxxxx-xxxxx
 ```
 
-### Custom Fields IDs
+⚠️ **Importante**: O token da API **NÃO** deve ser commitado no código. Ele é acessado apenas pelas API routes serverless.
 
-No `admin.html`, os IDs dos custom fields estão mapeados:
+### Custom Fields IDs (Oportunidades)
+
+No `admin.html`, os IDs dos custom fields das oportunidades estão mapeados:
 
 ```javascript
-const CUSTOM_FIELD_IDS = {
-    numero_pedido: 'hOelFeYPqjmxjPas71g8',
-    produtos_pedido: 'oQhKiHM0b35bSdMoJjdz',
-    valor_total: 'q4e6e0CJqy37YrWqOvNd',
-    // ... outros campos
+const OPPORTUNITY_FIELD_MAP = {
+    'valor_entrada': '2SV51sUefbrpE6j54idA',
+    'data_retirada': '8onjX8uBLwCOGns5rt2Y',
+    'numero_pedido': 'JZ4QzbdK3QSFQUT8b6OY',
+    'produtos': 'KjW6kvcr3bfEhHeMOGFt',
+    'observacoes': 'VAhkeO8SWwSiSqJG88is',
+    'valor_total': 'VpeiHn8nXzv4QWiCf9pl',
+    'status_pedido': 'tQP5XogWJYh0MbKAYjOm'
+};
+```
+
+### Pipeline e Estágios
+
+```javascript
+const PIPELINE_STAGES = {
+    'aguardando': 'a6b0ad85-0fc1-4f8c-abb8-8942e402e685',
+    'pago': 'f03fdf22-edd1-4c47-bdf7-56a3b51e5b62',
+    'pronto': '61a9a4f3-d168-4c92-bd85-1d7d4876ec29',
+    'entregue': '69ad13db-bc91-43af-b576-a5003e309520',
+    'cancelado': '10fa68b8-7b55-4059-8a02-65e8cdce2ecc'
 };
 ```
 
@@ -221,7 +240,7 @@ Siga o guia completo em: [docs/WEBHOOK-HOMIO.md](docs/WEBHOOK-HOMIO.md)
 
 Edite `admin.html` com suas credenciais da API do Homio.
 
-## 🔄 Fluxo de Pedidos
+## 🔄 Fluxo de Pedidos (Atualizado)
 
 ```
 1. Cliente acessa site
@@ -237,20 +256,40 @@ Edite `admin.html` com suas credenciais da API do Homio.
    (Evento: Purchase disparado)
     ↓
 5. Webhook envia dados para Homio
-   (Contato criado/atualizado com custom fields + UTMs)
+   (Oportunidade criada no pipeline "Pedidos Ceia")
+   (Estágio inicial: "Aguardando Pagamento")
+   (Custom fields preenchidos: produtos, valores, data, etc.)
     ↓
-6. Tags aplicadas: "ceia-2025", "aguardando-pagamento"
+6. Tags aplicadas no contato: "ceia-2025", "aguardando-pagamento"
     ↓
 7. Cliente recebe dados do PIX
     ↓
 8. Cliente faz pagamento e envia comprovante
     ↓
 9. Admin confirma PIX no painel
-   (Tag "pix-confirmado" adicionada)
-   (Evento: PurchaseReal disparado)
+   → Oportunidade movida para estágio "Pago"
+   → Campo "Status do pedido" = "PIX Confirmado"
+   → Tag "pix-confirmado" adicionada ao contato
+   → Evento: PurchaseReal disparado
     ↓
 10. Automação envia confirmação via WhatsApp
+    ↓
+11. Admin prepara pedido
+   → Oportunidade movida para estágio "Pronto"
+    ↓
+12. Cliente retira pedido
+   → Oportunidade movida para estágio "Entregue"
+   → Status da oportunidade = "won" (concluído)
 ```
+
+## 🔒 Segurança
+
+- ✅ Token da API protegido em variáveis de ambiente
+- ✅ API routes serverless fazem proxy das chamadas
+- ✅ Token nunca exposto no frontend
+- ✅ HTTPS obrigatório (Vercel)
+- ✅ CORS configurado nas API routes
+- ✅ Validação de inputs no backend
 
 ## 📞 Contato
 
@@ -282,5 +321,5 @@ Projeto proprietário - Restaurante Noz Comida Afetiva © 2025
 
 ---
 
-**Última atualização:** 05/12/2025  
-**Versão:** 2.0
+**Última atualização:** 16/12/2025  
+**Versão:** 3.0 - Migração para API de Oportunidades + Arquitetura Serverless Segura
