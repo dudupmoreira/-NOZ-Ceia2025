@@ -710,7 +710,7 @@
 
             try {
                 const response = await fetch(
-                    `${API_CONFIG.baseUrl}/opportunities/search?location_id=${API_CONFIG.locationId}&pipelineId=${API_CONFIG.pipelineId}&limit=100`,
+                    `${API_CONFIG.baseUrl}/opportunities/search?location_id=${API_CONFIG.locationId}&limit=100`,
                     {
                         headers: {
                             'Authorization': `Bearer ${API_CONFIG.token}`,
@@ -726,8 +726,10 @@
 
                 const data = await response.json();
                 
-                // A API já filtra por pipelineId, não precisa filtrar novamente
-                allPedidos = data.opportunities || [];
+                // Filtrar apenas oportunidades do pipeline "Pedidos Ceia"
+                allPedidos = (data.opportunities || []).filter(opp => 
+                    opp.pipelineId === API_CONFIG.pipelineId
+                );
 
                 console.log(`✅ ${allPedidos.length} pedidos carregados`);
                 displayPedidos();
