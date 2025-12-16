@@ -726,9 +726,9 @@
 
                 const data = await response.json();
                 
-                // Filtrar apenas oportunidades do pipeline "Pedidos Ceia"
+                // Filtrar apenas oportunidades do pipeline "Pedidos Ceia" com status "open" (ativas)
                 allPedidos = (data.opportunities || []).filter(opp => 
-                    opp.pipelineId === API_CONFIG.pipelineId
+                    opp.pipelineId === API_CONFIG.pipelineId && opp.status === 'open'
                 );
 
                 console.log(`✅ ${allPedidos.length} pedidos carregados`);
