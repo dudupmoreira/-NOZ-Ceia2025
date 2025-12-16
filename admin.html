@@ -878,18 +878,21 @@
             `;
         }
 
-        // Confirmar PIX - Move oportunidade para estágio "Pago"
+        // Confirmar PIX - Move oportunidade para estágio "Pago" e adiciona tag ao contato
         async function confirmarPix(opportunityId, numeroPedido) {
             if (!confirm(`Confirmar o PIX do pedido #${numeroPedido}?`)) {
                 return;
             }
 
             try {
-                // Buscar a oportunidade atual para pegar dados do contato para tracking
+                // Buscar a oportunidade atual para pegar dados do contato
                 const opportunity = allPedidos.find(p => p.id === opportunityId);
+                if (!opportunity || !opportunity.contactId) {
+                    throw new Error('Contato não encontrado na oportunidade');
+                }
                 
-                // Atualizar estágio da oportunidade para "Pago"
-                const updateResponse = await fetch(
+                // 1. Atualizar estágio da oportunidade para "Pago"
+                const updateOppResponse = await fetch(
                     `${API_CONFIG.baseUrl}/opportunities/${opportunityId}`,
                     {
                         method: 'PUT',
@@ -905,11 +908,53 @@
                     }
                 );
 
-                if (!updateResponse.ok) {
+                if (!updateOppResponse.ok) {
                     throw new Error('Erro ao atualizar estágio da oportunidade');
                 }
 
-                // 💰 Tracking: PurchaseReal - PIX Confirmado
+                // 2. Buscar tags atuais do contato
+                const getContactResponse = await fetch(
+                    `${API_CONFIG.baseUrl}/contacts/${opportunity.contactId}`,
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${API_CONFIG.token}`,
+                            'Version': API_CONFIG.version,
+                            'Accept': 'application/json'
+                        }
+                    }
+                );
+
+                if (!getContactResponse.ok) {
+                    throw new Error('Erro ao buscar contato');
+                }
+
+                const contactData = await getContactResponse.json();
+                const currentTags = contactData.contact?.tags || [];
+                
+                // 3. Adicionar tag "pix-confirmado" se não existir
+                if (!currentTags.includes('pix-confirmado')) {
+                    const newTags = [...currentTags, 'pix-confirmado'];
+                    
+                    const updateContactResponse = await fetch(
+                        `${API_CONFIG.baseUrl}/contacts/${opportunity.contactId}`,
+                        {
+                            method: 'PUT',
+                            headers: {
+                                'Authorization': `Bearer ${API_CONFIG.token}`,
+                                'Version': API_CONFIG.version,
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({ tags: newTags })
+                        }
+                    );
+
+                    if (!updateContactResponse.ok) {
+                        console.warn('Aviso: Não foi possível adicionar tag ao contato');
+                    }
+                }
+
+                // 4. 💰 Tracking: PurchaseReal - PIX Confirmado
                 if (opportunity) {
                     const contact = opportunity.contact || {};
                     const valorTotal = parseFloat(getCustomField(opportunity, 'valor_total')) || 0;
@@ -929,7 +974,7 @@
                     }
                 }
 
-                alert(`✅ PIX confirmado para o pedido #${numeroPedido}!`);
+                alert(`✅ PIX confirmado para o pedido #${numeroPedido}!\nAutomação de pagamento recebido será disparada.`);
                 await loadPedidos();
                 
             } catch (error) {
