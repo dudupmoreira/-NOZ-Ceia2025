@@ -17,7 +17,7 @@ const CONFIG = {
 // ESTADO DA APLICAÇÃO
 // ============================================
 let cart = [];
-let selectedDate = "24/12";
+let selectedDate = "31/12";
 let customerData = {
   nome: "",
   telefone: "",
@@ -355,9 +355,9 @@ function renderCartBody() {
         Data de Retirada
       </label>
       <div class="date-options">
-        <div class="date-option ${selectedDate === '24/12' ? 'selected' : ''}" onclick="selectDate('24/12')">
+        <div class="date-option disabled" style="opacity: 0.5; cursor: not-allowed;">
           <strong>24/12</strong>
-          <span>Véspera de Natal</span>
+          <span>Encomendas Encerradas</span>
         </div>
         <div class="date-option ${selectedDate === '31/12' ? 'selected' : ''}" onclick="selectDate('31/12')">
           <strong>31/12</strong>
