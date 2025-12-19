@@ -83,6 +83,15 @@ const cardapio = {
       ]
     },
     {
+      id: "pernil-cordeiro",
+      nome: "Pernil de Cordeiro",
+      descricao: "Acompanha molho do próprio assado com vinho tinto. Aproximadamente 1,8kg",
+      imagem: "imagens/Pernil de cordeiro.webp",
+      opcoes: [
+        { peso: "~1,8kg", preco: 380 }
+      ]
+    },
+    {
       id: "rosbife",
       nome: "Rosbife",
       descricao: "Com molho de cogumelos (shimeji, Paris e funghi), conhaque e creme de leite fresco",
