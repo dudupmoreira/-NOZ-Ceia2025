@@ -83,15 +83,6 @@ const cardapio = {
       ]
     },
     {
-      id: "pernil-cordeiro",
-      nome: "Pernil de Cordeiro",
-      descricao: "Acompanha molho do próprio assado com vinho tinto. Aproximadamente 1,8kg",
-      imagem: "imagens/Pernil de cordeiro.webp",
-      opcoes: [
-        { peso: "~1,8kg", preco: 380 }
-      ]
-    },
-    {
       id: "rosbife",
       nome: "Rosbife",
       descricao: "Com molho de cogumelos (shimeji, Paris e funghi), conhaque e creme de leite fresco",
@@ -119,35 +110,6 @@ const cardapio = {
       opcoes: [
         { peso: "500g", preco: 140 },
         { peso: "1kg", preco: 240 }
-      ]
-    }
-  ],
-  quiches: [
-    {
-      id: "quiche-bacon",
-      nome: "Quiche de Bacon com Alho Poró",
-      descricao: "",
-      imagem: "imagens/Quiche de bacon com alho poró.webp",
-      opcoes: [
-        { peso: "peça", preco: 170 }
-      ]
-    },
-    {
-      id: "quiche-brie",
-      nome: "Quiche de Brie com Damasco",
-      descricao: "",
-      imagem: "imagens/Quiche de Brie com damasco.webp",
-      opcoes: [
-        { peso: "peça", preco: 195 }
-      ]
-    },
-    {
-      id: "quiche-cogumelo",
-      nome: "Quiche de Cogumelo",
-      descricao: "",
-      imagem: "imagens/Quiche de cogumelo.webp",
-      opcoes: [
-        { peso: "peça", preco: 195 }
       ]
     }
   ],
@@ -209,7 +171,6 @@ const cardapio = {
 const categoryNames = {
   entradas: "Entradas",
   proteinas: "Proteínas",
-  quiches: "Quiches",
   acompanhamentos: "Acompanhamentos",
   sobremesas: "Sobremesas"
 };
